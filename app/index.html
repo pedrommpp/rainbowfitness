@@ -3,68 +3,237 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
-  <title>RainbowFitness — Ultra Pro</title>
+  <title>RainbowFitness — Pro</title>
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#ff5f6d">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
 
   <style>
     :root { 
       --card-bg: rgba(255,255,255,0.94); 
-      --accent: rgba(0,0,0,0.6); 
+      --accent: rgba(0,0,0,0.7); 
       --primary: #ff5f6d;
     }
     
-    body.dark {
-      --card-bg: rgba(30,30,30,0.96);
-      --accent: rgba(255,255,255,0.7);
-      color: white;
+    html, body { 
+      margin: 0; 
+      padding: 0; 
+      min-height: 100vh; 
+      font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+      overflow-x: hidden;
     }
-
-    html, body { margin: 0; padding: 0; min-height: 100vh; font-family: 'Segoe UI', system-ui, sans-serif; overflow-x: hidden; }
     
+    /* GRADIENTE MÁGICO ANIMADO */
     body {
       background: linear-gradient(-45deg, #ff4d4d, #ff944d, #ffe44d, #4dff88, #4dd2ff, #b84dff);
       background-size: 400% 400%;
       animation: gradient 15s ease infinite;
-      display: flex; flex-direction: column; align-items: center; padding: 15px; box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
     }
-    @keyframes gradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-    .app { width: 100%; max-width: 700px; background: var(--card-bg); border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); backdrop-filter: blur(15px); overflow: hidden; }
+    @keyframes gradient {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-    /* PERFIL E ÁGUA */
-    .profile-section { padding: 20px; display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.2); border-bottom: 1px solid rgba(0,0,0,0.05); position: relative; }
-    .avatar-wrapper { width: 65px; height: 65px; border-radius: 20px; overflow: hidden; border: 3px solid white; cursor: pointer; flex-shrink: 0; }
+    .app {
+      width: 100%;
+      max-width: 850px;
+      background: var(--card-bg);
+      border-radius: 24px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+      backdrop-filter: blur(12px);
+      overflow: hidden;
+      margin-bottom: 50px;
+    }
+
+    /* PERFIL E DASHBOARD */
+    .profile-section {
+      padding: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      background: rgba(255,255,255,0.4);
+      border-bottom: 1px solid rgba(0,0,0,0.05);
+      flex-wrap: wrap;
+    }
+    .avatar-wrapper {
+      width: 65px;
+      height: 65px;
+      border-radius: 18px;
+      overflow: hidden;
+      border: 3px solid white;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
     .avatar-wrapper img { width: 100%; height: 100%; object-fit: cover; }
     
-    .water-tracker { margin-left: auto; text-align: center; background: rgba(255,255,255,0.3); padding: 8px 12px; border-radius: 15px; }
-    .water-btn { font-size: 20px; cursor: pointer; transition: 0.2s; display: block; }
-    .water-btn:active { transform: scale(1.3); }
+    .user-info { flex: 1; min-width: 150px; }
+    .user-info input.name-input {
+      background: transparent;
+      border: none;
+      font-size: 22px;
+      font-weight: 800;
+      color: #111;
+      width: 100%;
+      outline: none;
+    }
+    .stats-row {
+      display: flex;
+      gap: 12px;
+      margin-top: 6px;
+      font-size: 12px;
+      font-weight: bold;
+      color: var(--accent);
+    }
+    .stats-row input {
+      width: 45px;
+      border: none;
+      background: rgba(0,0,0,0.05);
+      border-radius: 4px;
+      padding: 2px;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    /* CONTADOR DE ÁGUA */
+    .water-box {
+      background: rgba(255,255,255,0.5);
+      padding: 10px 15px;
+      border-radius: 15px;
+      text-align: center;
+      min-width: 100px;
+    }
+    .water-controls { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 5px; }
+    .w-btn { 
+      border: none; background: #fff; border-radius: 50%; width: 28px; height: 28px; 
+      cursor: pointer; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
 
     /* NAVEGAÇÃO */
-    .nav-tabs { display: flex; padding: 10px 20px; gap: 10px; }
-    .tab-link { flex: 1; padding: 12px; border: none; border-radius: 15px; font-weight: 800; cursor: pointer; background: rgba(0,0,0,0.05); color: var(--accent); transition: 0.3s; }
-    .tab-link.active { background: white; color: #111; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+    .tabs {
+      display: flex;
+      padding: 10px 24px;
+      background: rgba(255,255,255,0.2);
+      gap: 10px;
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 12px;
+      border: none;
+      border-radius: 12px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.3s;
+      background: rgba(0,0,0,0.05);
+    }
+    .tab-btn.active {
+      background: white;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
 
-    /* CARDS */
-    .card { background: white; border-radius: 20px; padding: 18px; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.03); }
-    body.dark .card { background: rgba(50,50,50,0.6); }
-    .card-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-    .card-header h2 { margin: 0; font-size: 18px; font-weight: 800; }
+    main { padding: 20px 24px; }
+    .page { display: none; }
+    .page.active { display: block; }
+
+    /* ESTILO DOS CARDS */
+    .card {
+      background: white;
+      border-radius: 18px;
+      padding: 16px;
+      margin-bottom: 15px;
+      border: 1px solid rgba(0,0,0,0.03);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .card-title-wrap { display: flex; align-items: center; gap: 10px; }
+    .dot { width: 12px; height: 12px; border-radius: 4px; }
     
-    /* EDIÇÃO TREINO E DIETA */
-    .edit-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.02); }
-    .edit-row input, .edit-row textarea { flex: 1; border: none; background: transparent; font-size: 14px; color: inherit; outline: none; font-family: inherit; }
-    .edit-row b { color: var(--primary); min-width: 60px; font-size: 12px; text-transform: uppercase; }
+    .btn-expand {
+      padding: 6px 12px;
+      border-radius: 8px;
+      border: 1px solid #ddd;
+      background: transparent;
+      font-size: 11px;
+      font-weight: 700;
+      cursor: pointer;
+    }
 
-    .check-box { width: 30px; height: 30px; border-radius: 10px; border: 2px solid #eee; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
-    .check-box.done { background: #4ade80; border-color: #4ade80; color: white; }
+    /* LISTA EDITÁVEL */
+    .content-area {
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px dashed #eee;
+    }
+    .item-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f9f9f9;
+    }
+    .item-row b { color: var(--primary); font-size: 12px; min-width: 70px; }
+    .item-row input, .item-row textarea {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-family: inherit;
+      font-size: 14px;
+    }
+    
+    .tick-box {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      border: 2px solid #eee;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      font-weight: bold;
+    }
+    .tick-box.done {
+      background: linear-gradient(90deg,#6ee7b7,#34d399);
+      border: none;
+      color: white;
+    }
 
-    .btn-action { padding: 8px 15px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; background: #111; color: white; font-size: 12px; }
+    .controls-main { display: flex; gap: 10px; margin-bottom: 20px; }
+    .btn-action { padding: 10px 16px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; }
+    .btn-black { background: #111; color: white; }
+    .btn-white { background: white; border: 1px solid #ddd; }
 
-    footer { padding: 25px; text-align: center; font-size: 12px; font-weight: bold; color: var(--accent); }
-    .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #111; color: #fff; padding: 12px 25px; border-radius: 50px; opacity: 0; transition: 0.3s; z-index: 100; }
+    footer {
+      padding: 20px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--accent);
+      background: rgba(255,255,255,0.1);
+    }
+    .toast {
+      position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+      background: #111; color: #fff; padding: 10px 20px; border-radius: 50px;
+      font-size: 13px; opacity: 0; transition: 0.3s; z-index: 1000;
+    }
+    .toast.show { opacity: 1; }
   </style>
 </head>
-<body id="body">
+<body>
 
 <div class="app">
   <div class="profile-section">
@@ -72,76 +241,99 @@
       <img id="uPic" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix">
     </div>
     <input type="file" id="pInput" hidden accept="image/*">
-    <div class="user-meta">
-      <input type="text" id="uName" style="background:none; border:none; font-weight:800; font-size:18px; outline:none; color:inherit;" value="Usuário Rainbow">
-      <div style="font-size:11px; font-weight:bold; opacity:0.6; margin-top:4px;">PESO: <input type="number" id="uW" style="width:40px; border:none; background:none; font-weight:bold;" value="70">kg | META: <input type="number" id="uG" style="width:40px; border:none; background:none; font-weight:bold;" value="65">kg</div>
+    
+    <div class="user-info">
+      <input type="text" id="uName" class="name-input" value="Seu Nome">
+      <div class="stats-row">
+        <span>PESO <input type="number" id="uWeight" step="0.1" value="70"> kg</span>
+        <span>META <input type="number" id="uGoal" step="0.1" value="65"> kg</span>
+      </div>
     </div>
-    <div class="water-tracker">
-      <span class="water-btn" onclick="addWater()">🥤</span>
-      <small id="waterCount" style="font-weight:800;">0L</small>
+
+    <div class="water-box">
+      <div style="font-size: 11px; font-weight: 800;">ÁGUA HOJE</div>
+      <div id="waterDisplay" style="font-size: 18px; font-weight: 900; color: #3b82f6;">0.0L</div>
+      <div class="water-controls">
+        <button class="w-btn" onclick="updateWater(-0.25)">-</button>
+        <button class="w-btn" onclick="updateWater(0.25)">+</button>
+        <button class="w-btn" onclick="resetWater()" style="font-size: 10px;">🔄</button>
+      </div>
     </div>
   </div>
 
-  <nav class="nav-tabs">
-    <button class="tab-link active" onclick="tab('treino', this)">💪 TREINOS</button>
-    <button class="tab-link" onclick="tab('dieta', this)">🥗 DIETA</button>
+  <nav class="tabs">
+    <button class="tab-btn active" onclick="showTab('treino', this)">💪 TREINOS</button>
+    <button class="tab-btn" onclick="showTab('nutri', this)">🥗 NUTRIÇÃO</button>
   </nav>
 
-  <main style="padding: 20px;">
-    <div id="v-treino" class="page active">
-      <button class="btn-action" onclick="resetDay()" style="margin-bottom:15px; width:100%;">Zerar Marcações de Hoje</button>
+  <main>
+    <div id="view-treino" class="page active">
+      <div class="controls-main">
+        <button class="btn-action btn-black" onclick="resetChecks()">Limpar Hoje</button>
+        <button class="btn-action btn-white" onclick="addWorkoutDay()">+ Novo Dia</button>
+      </div>
       <div id="treino-list"></div>
     </div>
 
-    <div id="v-dieta" class="page">
+    <div id="view-nutri" class="page">
       <div id="nutri-list"></div>
     </div>
   </main>
 
-  <footer>Feito com 💖 RainbowFitness | Salvo Localmente</footer>
+  <footer>
+    Feito com ❤️ RainbowFitness — Salvo Localmente
+  </footer>
 </div>
 
-<div class="toast" id="toast">Salvo com sucesso!</div>
+<div class="toast" id="toast">Alteração salva!</div>
 
 <script>
 // --- BANCO DE DADOS INTEGRADO ---
-const DB_NAME = 'rainbow_fitness_god_v6';
+const DB_NAME = 'rainbow_fitness_god_v7';
 let db = JSON.parse(localStorage.getItem(DB_NAME)) || {
-  user: { name: "Maromba VIP", photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix", weight: 70, goal: 65, water: 0 },
+  user: { name: "Usuário VIP", photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix", weight: 70, goal: 65, water: 0 },
   treino: [
-    { dia: "Segunda — Peito/Ombro/Tríceps", exs: ["Supino Reto","Supino Inclinado","Crucifixo","Desenvolvimento","Elevação Lateral","Tríceps Corda"] },
-    { dia: "Terça — Costas/Bíceps", exs: ["Puxada Frente","Remada Baixa","Remada Unilateral","Pulldown","Rosca Direta"] },
-    { dia: "Quarta — Glúteos/Posteriores", exs: ["Agachamento","Leg Press","Mesa Flexora","Stiff","Elevação Pélvica"] }
+    { dia: 'Segunda — Peito/Ombro/Tríceps', exs: ['Supino reto','Supino inclinado','Crucifixo','Desenvolvimento','Elevação lateral','Tríceps corda'] },
+    { dia: 'Terça — Costas/Bíceps', exs: ['Puxada frente','Remada baixa','Remada unilateral','Pulldown','Rosca direta'] },
+    { dia: 'Quarta — Glúteos/Posteriores', exs: ['Agachamento Smith','Leg press 45°','Mesa flexora','Stiff barra','Elevação pélvica','Cadeira abdutora'] },
+    { dia: 'Quinta — Ombro e Core', exs: ['Desenvolvimento Arnold','Elevação lateral halter','Elevação frontal polia','Remada alta polia','Prancha abdominal'] },
+    { dia: 'Sexta — Glúteos/Posteriores (2)', exs: ['Agachamento sumô','Avanço (afundo)','Cadeira extensora','Stiff romeno','Hip thrust unilateral','Glúteo máquina'] }
   ],
   progresso: {},
-  dieta: [
-    { dia: "Segunda", cafe: "3 ovos mexidos + pão integral", almoco: "Frango + arroz + salada", jantar: "Omelete de frango", extra: "Variações: Wrap de frango" },
-    { dia: "Terça", cafe: "Omelete + fruta", almoco: "Carne moída + batata", jantar: "Tacos saudáveis", extra: "Variações: Bowl de carne" }
+  nutri: [
+    { dia: 'Segunda', cafe: '3 ovos + aveia + banana', almoco: 'Frango + arroz + feijão', pre: 'Banana + aveia', jantar: 'Sanduíche de frango', var: 'Wrap de frango' },
+    { dia: 'Terça', cafe: 'Omelete + pão integral', almoco: 'Carne moída + batata', pre: 'Iogurte + aveia', jantar: 'Tacos saudáveis', var: 'Bowl de carne' },
+    { dia: 'Quarta', cafe: 'Ovos + aveia + banana', almoco: 'Peixe + arroz + feijão', pre: 'Banana + café', jantar: 'Omelete + salada', var: 'Salmão grelhado' },
+    { dia: 'Quinta', cafe: 'Iogurte + aveia + banana', almoco: 'Frango + arroz + feijão', pre: 'Banana', jantar: 'Tacos de carne', var: 'Burrito fit' },
+    { dia: 'Sexta', cafe: 'Ovos + aveia', almoco: 'Carne + batata + salada', pre: 'Banana + aveia', jantar: 'Sanduíche proteico', var: 'Taco de frango' },
+    { dia: 'Sábado', cafe: 'Omelete + pão integral', almoco: 'Churrasco + salada', pre: 'Livre', jantar: 'Tacos ou sanduíche', var: 'Wrap proteico' },
+    { dia: 'Domingo', cafe: 'Ovos + fruta', almoco: 'Peixe ou frango', pre: 'Livre', jantar: 'Omelete leve', var: 'Sopa de legumes' }
   ]
 };
 
 function save() {
   db.user.name = document.getElementById('uName').value;
-  db.user.weight = document.getElementById('uW').value;
-  db.user.goal = document.getElementById('uG').value;
+  db.user.weight = document.getElementById('uWeight').value;
+  db.user.goal = document.getElementById('uGoal').value;
   localStorage.setItem(DB_NAME, JSON.stringify(db));
-  const t = document.getElementById('toast'); t.style.opacity = 1;
-  setTimeout(() => t.style.opacity = 0, 1500);
+  const t = document.getElementById('toast'); t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 1500);
 }
 
-function tab(id, btn) {
+function showTab(id, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-link').forEach(b => b.classList.remove('active'));
-  document.getElementById('v-' + id).classList.add('active');
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
   btn.classList.add('active');
 }
 
 // --- ÁGUA ---
-function addWater() { 
-  db.user.water = (parseFloat(db.user.water) + 0.25).toFixed(2); 
-  document.getElementById('waterCount').innerText = db.user.water + 'L';
-  save(); 
+function updateWater(val) {
+  db.user.water = Math.max(0, (parseFloat(db.user.water) + val)).toFixed(2);
+  document.getElementById('waterDisplay').innerText = db.user.water + 'L';
+  save();
 }
+function resetWater() { if(confirm("Zerar água?")) { db.user.water = 0; document.getElementById('waterDisplay').innerText = '0.0L'; save(); } }
 
 // --- TREINO ---
 function renderTreino() {
@@ -149,61 +341,85 @@ function renderTreino() {
   container.innerHTML = '';
   db.treino.forEach((item, dIdx) => {
     const card = document.createElement('div'); card.className = 'card';
-    let list = item.exs.map((ex, eIdx) => {
-      const done = db.progresso[item.dia] && db.progresso[item.dia][ex];
-      return `<div class="edit-row">
-        <div class="check-box ${done?'done':''}" onclick="toggleEx(${dIdx}, ${eIdx}, this)">${done?'✓':''}</div>
-        <input type="text" value="${ex}" onblur="db.treino[${dIdx}].exs[${eIdx}]=this.value; save();">
-      </div>`;
-    }).join('');
+    const color = ['#ff5f6d','#ffc371','#fff76b','#8cf56b','#5fe3ff'][dIdx % 5];
     
+    let exsHtml = item.exs.map((ex, eIdx) => {
+      const done = db.progresso[item.dia] && db.progresso[item.dia][ex];
+      return `
+        <div class="item-row">
+          <div class="tick-box ${done?'done':''}" onclick="toggleCheck(${dIdx}, ${eIdx}, this)">${done?'✓':''}</div>
+          <input type="text" value="${ex}" onblur="updateEx(${dIdx}, ${eIdx}, this.value)">
+          <button style="border:none; background:none; cursor:pointer; opacity:0.2;" onclick="removeEx(${dIdx}, ${eIdx})">✕</button>
+        </div>`;
+    }).join('');
+
     card.innerHTML = `
-      <div class="card-header" onclick="toggleCard(this)"><h2>${item.dia}</h2> <span>▼</span></div>
-      <div class="content" style="display:none; margin-top:10px;">${list}</div>`;
+      <div class="card-header">
+        <div class="card-title-wrap">
+          <div class="dot" style="background:${color}"></div>
+          <input type="text" style="font-weight:800; border:none; outline:none; background:transparent;" value="${item.dia}" onblur="updateDayTitle(${dIdx}, this.value)">
+        </div>
+        <button class="btn-expand" onclick="toggleExpand(this)">EXPANDIR</button>
+      </div>
+      <div class="content-area" style="display:none">
+        ${exsHtml}
+        <button class="btn-action btn-white" style="width:100%; margin-top:10px; font-size:12px;" onclick="addExToDay(${dIdx})">+ Exercício</button>
+      </div>`;
     container.appendChild(card);
   });
 }
 
-function toggleEx(dIdx, eIdx, el) {
-  const day = db.treino[dIdx].dia; const ex = db.treino[dIdx].exs[eIdx];
-  db.progresso[day] = db.progresso[day] || {};
-  const active = !el.classList.contains('done');
-  el.classList.toggle('done'); el.innerHTML = active ? '✓' : '';
-  db.progresso[day][ex] = active; save();
+function toggleExpand(btn) {
+  const content = btn.parentElement.nextElementSibling;
+  const isHidden = content.style.display === 'none';
+  content.style.display = isHidden ? 'block' : 'none';
+  btn.textContent = isHidden ? 'RECOLHER' : 'EXPANDIR';
 }
 
-// --- DIETA ---
+function toggleCheck(dIdx, eIdx, el) {
+  const dia = db.treino[dIdx].dia;
+  const ex = db.treino[dIdx].exs[eIdx];
+  db.progresso[dia] = db.progresso[dia] || {};
+  const active = !el.classList.contains('done');
+  el.classList.toggle('done'); el.innerHTML = active ? '✓' : '';
+  db.progresso[dia][ex] = active; save();
+}
+
+// --- NUTRIÇÃO ---
 function renderNutri() {
   const container = document.getElementById('nutri-list');
   container.innerHTML = '';
-  db.dieta.forEach((m, i) => {
+  db.nutri.forEach((m, i) => {
     const card = document.createElement('div'); card.className = 'card';
     card.innerHTML = `
-      <div class="card-header" onclick="toggleCard(this)"><h2>${m.dia}</h2> <span>▼</span></div>
-      <div class="content" style="display:none; margin-top:10px;">
-        <div class="edit-row"><b>CAFÉ:</b><input value="${m.cafe}" onblur="db.dieta[${i}].cafe=this.value; save();"></div>
-        <div class="edit-row"><b>ALMOÇO:</b><input value="${m.almoco}" onblur="db.dieta[${i}].almoco=this.value; save();"></div>
-        <div class="edit-row"><b>JANTAR:</b><input value="${m.jantar}" onblur="db.dieta[${i}].jantar=this.value; save();"></div>
-        <div class="edit-row"><textarea placeholder="Variações..." onblur="db.dieta[${i}].extra=this.value; save();">${m.extra || ''}</textarea></div>
+      <div class="card-header">
+        <div class="card-title-wrap"><b>${m.dia}</b></div>
+        <button class="btn-expand" onclick="toggleExpand(this)">EXPANDIR</button>
+      </div>
+      <div class="content-area" style="display:none">
+        <div class="item-row"><b>CAFÉ:</b><input value="${m.cafe}" onblur="db.nutri[${i}].cafe=this.value; save();"></div>
+        <div class="item-row"><b>ALMOÇO:</b><input value="${m.almoco}" onblur="db.nutri[${i}].almoco=this.value; save();"></div>
+        <div class="item-row"><b>PRÉ:</b><input value="${m.pre}" onblur="db.nutri[${i}].pre=this.value; save();"></div>
+        <div class="item-row"><b>JANTAR:</b><input value="${m.jantar}" onblur="db.nutri[${i}].jantar=this.value; save();"></div>
+        <div class="item-row"><b>VARIAÇÕES:</b><textarea onblur="db.nutri[${i}].var=this.value; save();">${m.var}</textarea></div>
       </div>`;
     container.appendChild(card);
   });
 }
 
-function toggleCard(el) {
-  const content = el.nextElementSibling;
-  const isHidden = content.style.display === 'none';
-  content.style.display = isHidden ? 'block' : 'none';
-  el.querySelector('span').innerText = isHidden ? '▲' : '▼';
-}
+// --- FUNÇÕES DE EDIÇÃO ---
+function updateEx(dIdx, eIdx, val) { db.treino[dIdx].exs[eIdx] = val; save(); }
+function updateDayTitle(idx, val) { db.treino[idx].dia = val; save(); }
+function addWorkoutDay() { db.treino.push({ dia: "Novo Dia", exs: [] }); renderTreino(); save(); }
+function addExToDay(idx) { db.treino[idx].exs.push("Novo Exercício"); renderTreino(); save(); }
+function removeEx(dIdx, eIdx) { if(confirm("Excluir?")){ db.treino[dIdx].exs.splice(eIdx, 1); renderTreino(); save(); } }
+function resetChecks() { if(confirm("Zerar treinos de hoje?")) { db.progresso = {}; renderTreino(); save(); } }
 
-function resetDay() { if(confirm("Deseja zerar o treino?")) { db.progresso = {}; renderTreino(); save(); } }
-
-// --- INIT ---
+// --- PERFIL ---
 document.getElementById('uName').value = db.user.name;
-document.getElementById('uW').value = db.user.weight;
-document.getElementById('uG').value = db.user.goal;
-document.getElementById('waterCount').innerText = (db.user.water || 0) + 'L';
+document.getElementById('uWeight').value = db.user.weight;
+document.getElementById('uGoal').value = db.user.goal;
+document.getElementById('waterDisplay').innerText = (db.user.water || 0) + 'L';
 document.getElementById('uPic').src = db.user.photo;
 document.getElementById('pInput').onchange = e => {
   const r = new FileReader();
@@ -211,8 +427,12 @@ document.getElementById('pInput').onchange = e => {
   r.readAsDataURL(e.target.files[0]);
 };
 
-renderTreino(); renderNutri();
-</script>
+document.getElementById('uName').onblur = save;
+document.getElementById('uWeight').onblur = save;
+document.getElementById('uGoal').onblur = save;
 
+renderTreino();
+renderNutri();
+</script>
 </body>
 </html>
