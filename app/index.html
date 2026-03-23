@@ -5,23 +5,20 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
   <title>RainbowFitness — Ultra Pro</title>
 
-  <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#ff5f6d">
-  
   <style>
     :root { 
-      --card-bg: rgba(255,255,255,0.92); 
+      --card-bg: rgba(255,255,255,0.94); 
       --accent: rgba(0,0,0,0.6); 
       --primary: #ff5f6d;
     }
     
     body.dark {
-      --card-bg: rgba(30,30,30,0.95);
-      --accent: rgba(255,255,255,0.6);
+      --card-bg: rgba(30,30,30,0.96);
+      --accent: rgba(255,255,255,0.7);
       color: white;
     }
 
-    html, body { margin: 0; padding: 0; min-height: 100vh; font-family: 'Inter', sans-serif; overflow-x: hidden; }
+    html, body { margin: 0; padding: 0; min-height: 100vh; font-family: 'Segoe UI', system-ui, sans-serif; overflow-x: hidden; }
     
     body {
       background: linear-gradient(-45deg, #ff4d4d, #ff944d, #ffe44d, #4dff88, #4dd2ff, #b84dff);
@@ -31,201 +28,182 @@
     }
     @keyframes gradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-    .app { width: 100%; max-width: 700px; background: var(--card-bg); border-radius: 28px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); backdrop-filter: blur(12px); overflow: hidden; transition: 0.3s; }
+    .app { width: 100%; max-width: 700px; background: var(--card-bg); border-radius: 30px; box-shadow: 0 20px 40px rgba(0,0,0,0.2); backdrop-filter: blur(15px); overflow: hidden; }
 
-    /* HEADER & PERFIL */
+    /* PERFIL E ÁGUA */
     .profile-section { padding: 20px; display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.2); border-bottom: 1px solid rgba(0,0,0,0.05); position: relative; }
-    .avatar-wrapper { width: 60px; height: 60px; border-radius: 18px; overflow: hidden; border: 2px solid white; cursor: pointer; flex-shrink: 0; }
+    .avatar-wrapper { width: 65px; height: 65px; border-radius: 20px; overflow: hidden; border: 3px solid white; cursor: pointer; flex-shrink: 0; }
     .avatar-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-    .user-meta { flex: 1; }
-    .user-meta input.name-in { background: transparent; border: none; font-size: 20px; font-weight: 800; color: inherit; outline: none; width: 100%; }
     
-    /* PROGRESSO DE PESO */
-    .stats-row { display: flex; gap: 10px; margin-top: 5px; font-size: 12px; font-weight: bold; }
-    .stat-box { display: flex; flex-direction: column; }
-    .stat-box input { background: rgba(0,0,0,0.05); border: none; border-radius: 5px; width: 45px; padding: 2px; text-align: center; font-weight: bold; color: var(--primary); }
+    .water-tracker { margin-left: auto; text-align: center; background: rgba(255,255,255,0.3); padding: 8px 12px; border-radius: 15px; }
+    .water-btn { font-size: 20px; cursor: pointer; transition: 0.2s; display: block; }
+    .water-btn:active { transform: scale(1.3); }
 
-    /* TABS */
+    /* NAVEGAÇÃO */
     .nav-tabs { display: flex; padding: 10px 20px; gap: 10px; }
-    .tab-link { flex: 1; padding: 12px; border: none; border-radius: 14px; font-weight: 800; cursor: pointer; background: rgba(0,0,0,0.05); transition: 0.3s; color: var(--accent); }
-    .tab-link.active { background: white; color: #111; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+    .tab-link { flex: 1; padding: 12px; border: none; border-radius: 15px; font-weight: 800; cursor: pointer; background: rgba(0,0,0,0.05); color: var(--accent); transition: 0.3s; }
+    .tab-link.active { background: white; color: #111; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
-    main { padding: 0 20px 20px; }
-    .page { display: none; }
-    .page.active { display: block; }
-
-    /* CARDS GOD LEVEL */
-    .card { background: white; border-radius: 20px; padding: 18px; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
-    body.dark .card { background: rgba(50,50,50,0.5); border-color: rgba(255,255,255,0.05); }
+    /* CARDS */
+    .card { background: white; border-radius: 20px; padding: 18px; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.03); }
+    body.dark .card { background: rgba(50,50,50,0.6); }
+    .card-header { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+    .card-header h2 { margin: 0; font-size: 18px; font-weight: 800; }
     
-    .card-title { font-weight: 800; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-    .editable-list { display: flex; flex-direction: column; gap: 10px; }
-    .item-row { display: flex; align-items: center; gap: 10px; padding: 5px 0; border-bottom: 1px solid rgba(0,0,0,0.03); }
-    .item-row input { flex: 1; border: none; background: transparent; font-size: 14px; color: inherit; outline: none; }
-    
-    .check-circle { width: 28px; height: 28px; border-radius: 10px; border: 2px solid #eee; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; flex-shrink: 0; }
-    .check-circle.checked { background: linear-gradient(90deg,#6ee7b7,#34d399); border: none; color: white; }
+    /* EDIÇÃO TREINO E DIETA */
+    .edit-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.02); }
+    .edit-row input, .edit-row textarea { flex: 1; border: none; background: transparent; font-size: 14px; color: inherit; outline: none; font-family: inherit; }
+    .edit-row b { color: var(--primary); min-width: 60px; font-size: 12px; text-transform: uppercase; }
 
-    /* BUTTONS */
-    .btn { padding: 10px 18px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; }
-    .btn-main { background: #111; color: white; }
-    .btn-outline { background: transparent; border: 1px solid #ddd; color: var(--accent); }
-    .theme-toggle { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 20px; }
+    .check-box { width: 30px; height: 30px; border-radius: 10px; border: 2px solid #eee; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
+    .check-box.done { background: #4ade80; border-color: #4ade80; color: white; }
 
-    footer { padding: 20px; text-align: center; font-size: 12px; color: var(--accent); }
-    .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #111; color: #fff; padding: 12px 25px; border-radius: 50px; opacity: 0; transition: 0.3s; pointer-events: none; }
-    .toast.show { opacity: 1; }
+    .btn-action { padding: 8px 15px; border-radius: 10px; border: none; font-weight: bold; cursor: pointer; background: #111; color: white; font-size: 12px; }
+
+    footer { padding: 25px; text-align: center; font-size: 12px; font-weight: bold; color: var(--accent); }
+    .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #111; color: #fff; padding: 12px 25px; border-radius: 50px; opacity: 0; transition: 0.3s; z-index: 100; }
   </style>
 </head>
 <body id="body">
 
 <div class="app">
   <div class="profile-section">
-    <div class="theme-toggle" onclick="toggleTheme()">🌓</div>
     <div class="avatar-wrapper" onclick="document.getElementById('pInput').click()">
       <img id="uPic" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix">
     </div>
     <input type="file" id="pInput" hidden accept="image/*">
     <div class="user-meta">
-      <input type="text" id="uName" class="name-in" value="Meu Nome">
-      <div class="stats-row">
-        <div class="stat-box">PESO <input type="number" id="uWeight" value="70" step="0.1" onchange="save()"> kg</div>
-        <div class="stat-box">META <input type="number" id="uGoal" value="65" step="0.1" onchange="save()"> kg</div>
-      </div>
+      <input type="text" id="uName" style="background:none; border:none; font-weight:800; font-size:18px; outline:none; color:inherit;" value="Usuário Rainbow">
+      <div style="font-size:11px; font-weight:bold; opacity:0.6; margin-top:4px;">PESO: <input type="number" id="uW" style="width:40px; border:none; background:none; font-weight:bold;" value="70">kg | META: <input type="number" id="uG" style="width:40px; border:none; background:none; font-weight:bold;" value="65">kg</div>
+    </div>
+    <div class="water-tracker">
+      <span class="water-btn" onclick="addWater()">🥤</span>
+      <small id="waterCount" style="font-weight:800;">0L</small>
     </div>
   </div>
 
   <nav class="nav-tabs">
     <button class="tab-link active" onclick="tab('treino', this)">💪 TREINOS</button>
-    <button class="tab-link" onclick="tab('dieta', this)">🍎 DIETA</button>
+    <button class="tab-link" onclick="tab('dieta', this)">🥗 DIETA</button>
   </nav>
 
-  <main>
-    <div id="view-treino" class="page active">
-      <div style="display:flex; gap:10px; margin-bottom:15px;">
-        <button class="btn btn-main" onclick="resetToday()">Zerar Checks</button>
-        <button class="btn btn-outline" onclick="addWorkoutDay()">+ Novo Dia</button>
-      </div>
-      <div id="workout-list"></div>
+  <main style="padding: 20px;">
+    <div id="v-treino" class="page active">
+      <button class="btn-action" onclick="resetDay()" style="margin-bottom:15px; width:100%;">Zerar Marcações de Hoje</button>
+      <div id="treino-list"></div>
     </div>
 
-    <div id="view-dieta" class="page">
-      <div id="diet-list"></div>
+    <div id="v-dieta" class="page">
+      <div id="nutri-list"></div>
     </div>
   </main>
 
-  <footer>
-    Feito com ❤️ RainbowFitness — 100% Salvo Localmente
-  </footer>
+  <footer>Feito com 💖 RainbowFitness | Salvo Localmente</footer>
 </div>
 
-<div class="toast" id="toast">Alteração salva!</div>
+<div class="toast" id="toast">Salvo com sucesso!</div>
 
 <script>
-// --- CORE ENGINE ---
-const APP_DB = 'rainbow_god_v5';
-let db = JSON.parse(localStorage.getItem(APP_DB)) || {
-  user: { name: "Seu Nome", photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix", weight: 70, goal: 65, dark: false },
+// --- BANCO DE DADOS INTEGRADO ---
+const DB_NAME = 'rainbow_fitness_god_v6';
+let db = JSON.parse(localStorage.getItem(DB_NAME)) || {
+  user: { name: "Maromba VIP", photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix", weight: 70, goal: 65, water: 0 },
   treino: [
-    { day: "Segunda — Superior", exs: ["Supino Reto","Desenvolvimento","Tríceps Corda"] },
-    { day: "Terça — Inferior", exs: ["Agachamento","Leg Press","Mesa Flexora"] }
+    { dia: "Segunda — Peito/Ombro/Tríceps", exs: ["Supino Reto","Supino Inclinado","Crucifixo","Desenvolvimento","Elevação Lateral","Tríceps Corda"] },
+    { dia: "Terça — Costas/Bíceps", exs: ["Puxada Frente","Remada Baixa","Remada Unilateral","Pulldown","Rosca Direta"] },
+    { dia: "Quarta — Glúteos/Posteriores", exs: ["Agachamento","Leg Press","Mesa Flexora","Stiff","Elevação Pélvica"] }
   ],
   progresso: {},
   dieta: [
-    { label: "Café da Manhã", menu: "3 ovos + café" },
-    { label: "Almoço", menu: "Frango + arroz + salada" }
+    { dia: "Segunda", cafe: "3 ovos mexidos + pão integral", almoco: "Frango + arroz + salada", jantar: "Omelete de frango", extra: "Variações: Wrap de frango" },
+    { dia: "Terça", cafe: "Omelete + fruta", almoco: "Carne moída + batata", jantar: "Tacos saudáveis", extra: "Variações: Bowl de carne" }
   ]
 };
 
 function save() {
   db.user.name = document.getElementById('uName').value;
-  db.user.weight = document.getElementById('uWeight').value;
-  db.user.goal = document.getElementById('uGoal').value;
-  localStorage.setItem(APP_DB, JSON.stringify(db));
-  const t = document.getElementById('toast'); t.classList.add('show');
-  setTimeout(() => t.classList.remove('show'), 1500);
+  db.user.weight = document.getElementById('uW').value;
+  db.user.goal = document.getElementById('uG').value;
+  localStorage.setItem(DB_NAME, JSON.stringify(db));
+  const t = document.getElementById('toast'); t.style.opacity = 1;
+  setTimeout(() => t.style.opacity = 0, 1500);
 }
-
-function toggleTheme() { db.user.dark = !db.user.dark; applyTheme(); save(); }
-function applyTheme() { document.getElementById('body').classList.toggle('dark', db.user.dark); }
 
 function tab(id, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-link').forEach(b => b.classList.remove('active'));
-  document.getElementById('view-' + id).classList.add('active');
+  document.getElementById('v-' + id).classList.add('active');
   btn.classList.add('active');
 }
 
-// --- RENDER TREINO ---
+// --- ÁGUA ---
+function addWater() { 
+  db.user.water = (parseFloat(db.user.water) + 0.25).toFixed(2); 
+  document.getElementById('waterCount').innerText = db.user.water + 'L';
+  save(); 
+}
+
+// --- TREINO ---
 function renderTreino() {
-  const container = document.getElementById('workout-list');
+  const container = document.getElementById('treino-list');
   container.innerHTML = '';
   db.treino.forEach((item, dIdx) => {
     const card = document.createElement('div'); card.className = 'card';
-    let rowsHtml = item.exs.map((ex, eIdx) => {
-      const isDone = db.progresso[item.day] && db.progresso[item.day][ex];
-      return `
-        <div class="item-row">
-          <div class="check-circle ${isDone?'checked':''}" onclick="toggleEx(${dIdx}, ${eIdx}, this)">${isDone?'✓':''}</div>
-          <input type="text" value="${ex}" onblur="updateEx(${dIdx}, ${eIdx}, this.value)">
-          <span style="opacity:0.3" onclick="removeEx(${dIdx}, ${eIdx})">✕</span>
-        </div>`;
+    let list = item.exs.map((ex, eIdx) => {
+      const done = db.progresso[item.dia] && db.progresso[item.dia][ex];
+      return `<div class="edit-row">
+        <div class="check-box ${done?'done':''}" onclick="toggleEx(${dIdx}, ${eIdx}, this)">${done?'✓':''}</div>
+        <input type="text" value="${ex}" onblur="db.treino[${dIdx}].exs[${eIdx}]=this.value; save();">
+      </div>`;
     }).join('');
     
     card.innerHTML = `
-      <div class="card-title">
-        <input type="text" style="font-weight:800; border:none; background:transparent; color:inherit; outline:none;" value="${item.day}" onblur="updateDay(${dIdx}, this.value)">
-        <button class="btn btn-outline" style="font-size:10px" onclick="toggleExp(this)">EXPANDIR</button>
-      </div>
-      <div class="editable-list" style="display:none">
-        ${rowsHtml}
-        <button class="btn btn-outline" style="width:100%; margin-top:10px;" onclick="addExToDay(${dIdx})">+ Exercício</button>
-      </div>`;
+      <div class="card-header" onclick="toggleCard(this)"><h2>${item.dia}</h2> <span>▼</span></div>
+      <div class="content" style="display:none; margin-top:10px;">${list}</div>`;
     container.appendChild(card);
   });
 }
 
 function toggleEx(dIdx, eIdx, el) {
-  const dayName = db.treino[dIdx].day;
-  const exName = db.treino[dIdx].exs[eIdx];
-  db.progresso[dayName] = db.progresso[dayName] || {};
-  const active = !el.classList.contains('checked');
-  el.classList.toggle('checked'); el.innerHTML = active ? '✓' : '';
-  db.progresso[dayName][exName] = active; save();
+  const day = db.treino[dIdx].dia; const ex = db.treino[dIdx].exs[eIdx];
+  db.progresso[day] = db.progresso[day] || {};
+  const active = !el.classList.contains('done');
+  el.classList.toggle('done'); el.innerHTML = active ? '✓' : '';
+  db.progresso[day][ex] = active; save();
 }
 
-function toggleExp(btn) {
-  const list = btn.parentElement.nextElementSibling;
-  const isHidden = list.style.display === 'none';
-  list.style.display = isHidden ? 'block' : 'none';
-  btn.textContent = isHidden ? 'RECOLHER' : 'EXPANDIR';
-}
-
-// --- RENDER DIETA ---
-function renderDieta() {
-  const container = document.getElementById('diet-list');
+// --- DIETA ---
+function renderNutri() {
+  const container = document.getElementById('nutri-list');
   container.innerHTML = '';
-  db.dieta.forEach((meal, mIdx) => {
+  db.dieta.forEach((m, i) => {
     const card = document.createElement('div'); card.className = 'card';
     card.innerHTML = `
-      <div class="card-title"><input type="text" style="font-weight:800; border:none; background:transparent; color:#ff5f6d; outline:none;" value="${meal.label}" onblur="db.dieta[${mIdx}].label=this.value; save();"></div>
-      <textarea style="width:100%; border:none; background:transparent; font-family:inherit; outline:none; font-size:14px; color:inherit;" rows="2" onblur="db.dieta[${mIdx}].menu=this.value; save();">${meal.menu}</textarea>
-    `;
+      <div class="card-header" onclick="toggleCard(this)"><h2>${m.dia}</h2> <span>▼</span></div>
+      <div class="content" style="display:none; margin-top:10px;">
+        <div class="edit-row"><b>CAFÉ:</b><input value="${m.cafe}" onblur="db.dieta[${i}].cafe=this.value; save();"></div>
+        <div class="edit-row"><b>ALMOÇO:</b><input value="${m.almoco}" onblur="db.dieta[${i}].almoco=this.value; save();"></div>
+        <div class="edit-row"><b>JANTAR:</b><input value="${m.jantar}" onblur="db.dieta[${i}].jantar=this.value; save();"></div>
+        <div class="edit-row"><textarea placeholder="Variações..." onblur="db.dieta[${i}].extra=this.value; save();">${m.extra || ''}</textarea></div>
+      </div>`;
     container.appendChild(card);
   });
 }
 
-// --- SETUP ---
-function updateEx(dIdx, eIdx, val) { db.treino[dIdx].exs[eIdx] = val; save(); }
-function updateDay(idx, val) { db.treino[idx].day = val; save(); }
-function addWorkoutDay() { db.treino.push({ day: "Novo Dia", exs: [] }); renderTreino(); save(); }
-function addExToDay(idx) { db.treino[idx].exs.push("Novo Exercício"); renderTreino(); save(); }
-function removeEx(dIdx, eIdx) { db.treino[dIdx].exs.splice(eIdx, 1); renderTreino(); save(); }
-function resetToday() { if(confirm("Zerar progresso?")) { db.progresso = {}; renderTreino(); save(); } }
+function toggleCard(el) {
+  const content = el.nextElementSibling;
+  const isHidden = content.style.display === 'none';
+  content.style.display = isHidden ? 'block' : 'none';
+  el.querySelector('span').innerText = isHidden ? '▲' : '▼';
+}
 
+function resetDay() { if(confirm("Deseja zerar o treino?")) { db.progresso = {}; renderTreino(); save(); } }
+
+// --- INIT ---
 document.getElementById('uName').value = db.user.name;
-document.getElementById('uWeight').value = db.user.weight;
-document.getElementById('uGoal').value = db.user.goal;
+document.getElementById('uW').value = db.user.weight;
+document.getElementById('uG').value = db.user.goal;
+document.getElementById('waterCount').innerText = (db.user.water || 0) + 'L';
 document.getElementById('uPic').src = db.user.photo;
 document.getElementById('pInput').onchange = e => {
   const r = new FileReader();
@@ -233,7 +211,8 @@ document.getElementById('pInput').onchange = e => {
   r.readAsDataURL(e.target.files[0]);
 };
 
-applyTheme(); renderTreino(); renderDieta();
+renderTreino(); renderNutri();
 </script>
+
 </body>
 </html>
