@@ -15,17 +15,26 @@
       --card-bg: rgba(255,255,255,0.94); 
       --accent: rgba(0,0,0,0.7); 
       --primary: #ff5f6d;
+      --text: #111;
     }
     
+    body.dark {
+      --card-bg: rgba(30,30,30,0.96);
+      --accent: rgba(255,255,255,0.7);
+      --text: #eee;
+      --primary: #ff7bdb;
+    }
+
     html, body { 
       margin: 0; 
       padding: 0; 
       min-height: 100vh; 
-      font-family: 'Inter', system-ui, -apple-system, sans-serif; 
+      font-family: 'Inter', system-ui, sans-serif; 
       overflow-x: hidden;
+      transition: background 0.3s;
     }
     
-    /* GRADIENTE MÁGICO ANIMADO */
+    /* GRADIENTE ANIMADO */
     body {
       background: linear-gradient(-45deg, #ff4d4d, #ff944d, #ffe44d, #4dff88, #4dd2ff, #b84dff);
       background-size: 400% 400%;
@@ -35,6 +44,7 @@
       align-items: center;
       padding: 20px;
       box-sizing: border-box;
+      color: var(--text);
     }
 
     @keyframes gradient {
@@ -47,32 +57,30 @@
       width: 100%;
       max-width: 850px;
       background: var(--card-bg);
-      border-radius: 24px;
+      border-radius: 28px;
       box-shadow: 0 15px 35px rgba(0,0,0,0.2);
       backdrop-filter: blur(12px);
       overflow: hidden;
       margin-bottom: 50px;
+      transition: background 0.3s;
     }
 
-    /* TÍTULO DO APP NO TOPO */
     .app-title {
-      padding: 20px 24px 10px;
-      font-size: 26px;
+      padding: 20px 24px 5px;
+      font-size: 24px;
       font-weight: 900;
-      color: #111;
-      text-align: left;
       letter-spacing: -1px;
     }
 
     /* PERFIL E DASHBOARD */
     .profile-section {
-      padding: 10px 24px 24px;
+      padding: 10px 24px 20px;
       display: flex;
       align-items: center;
       gap: 16px;
-      background: rgba(255,255,255,0.0);
       border-bottom: 1px solid rgba(0,0,0,0.05);
       flex-wrap: wrap;
+      position: relative;
     }
     .avatar-wrapper {
       width: 65px;
@@ -83,159 +91,104 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       cursor: pointer;
       flex-shrink: 0;
-      background: #eee;
+      background: #ddd;
     }
     .avatar-wrapper img { width: 100%; height: 100%; object-fit: cover; }
     
-    .user-info { flex: 1; min-width: 150px; }
+    .user-info { flex: 1; min-width: 140px; }
     .user-info input.name-input {
       background: transparent;
       border: none;
-      font-size: 22px;
+      font-size: 20px;
       font-weight: 800;
-      color: #111;
+      color: var(--text);
       width: 100%;
       outline: none;
     }
     .stats-row {
       display: flex;
-      gap: 12px;
-      margin-top: 6px;
-      font-size: 12px;
+      gap: 10px;
+      margin-top: 4px;
+      font-size: 11px;
       font-weight: bold;
       color: var(--accent);
     }
     .stats-row input {
-      width: 45px;
+      width: 40px;
       border: none;
       background: rgba(0,0,0,0.05);
       border-radius: 4px;
       padding: 2px;
       text-align: center;
       font-weight: bold;
+      color: var(--text);
     }
 
-    /* CONTADOR DE ÁGUA */
+    .night-toggle {
+      position: absolute; top: 15px; right: 24px;
+      cursor: pointer; font-size: 20px; opacity: 0.7;
+    }
+
+    /* ÁGUA */
     .water-box {
-      background: rgba(255,255,255,0.5);
-      padding: 10px 15px;
+      background: rgba(255,255,255,0.4);
+      padding: 10px;
       border-radius: 15px;
       text-align: center;
-      min-width: 100px;
+      min-width: 90px;
     }
-    .water-controls { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 5px; }
     .w-btn { 
-      border: none; background: #fff; border-radius: 50%; width: 28px; height: 28px; 
+      border: none; background: white; border-radius: 50%; width: 26px; height: 26px; 
       cursor: pointer; font-weight: bold; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
 
-    /* NAVEGAÇÃO */
-    .tabs {
-      display: flex;
-      padding: 10px 24px;
-      background: rgba(255,255,255,0.2);
-      gap: 10px;
-    }
+    /* NAV */
+    .tabs { display: flex; padding: 10px 24px; background: rgba(255,255,255,0.1); gap: 10px; }
     .tab-btn {
-      flex: 1;
-      padding: 12px;
-      border: none;
-      border-radius: 12px;
-      font-weight: 800;
-      cursor: pointer;
-      transition: 0.3s;
-      background: rgba(0,0,0,0.05);
+      flex: 1; padding: 12px; border: none; border-radius: 12px;
+      font-weight: 800; cursor: pointer; transition: 0.3s;
+      background: rgba(0,0,0,0.05); color: var(--text);
     }
-    .tab-btn.active {
-      background: white;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    }
+    .tab-btn.active { background: white; color: #111; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
 
     main { padding: 20px 24px; }
     .page { display: none; }
     .page.active { display: block; }
 
-    /* ESTILO DOS CARDS */
+    /* CARDS */
     .card {
-      background: white;
-      border-radius: 18px;
-      padding: 16px;
-      margin-bottom: 15px;
-      border: 1px solid rgba(0,0,0,0.03);
-      box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+      background: white; border-radius: 18px; padding: 16px; margin-bottom: 15px;
+      border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+      transition: background 0.3s;
     }
-    .card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-    .card-title-wrap { display: flex; align-items: center; gap: 10px; }
-    .dot { width: 12px; height: 12px; border-radius: 4px; }
+    body.dark .card { background: rgba(50,50,50,0.5); border-color: rgba(255,255,255,0.05); }
+
+    .card-header { display: flex; align-items: center; justify-content: space-between; }
+    .card-title-wrap { display: flex; align-items: center; gap: 10px; flex: 1; }
+    .dot { width: 10px; height: 10px; border-radius: 3px; }
     
     .btn-expand {
-      padding: 6px 12px;
-      border-radius: 8px;
-      border: 1px solid #ddd;
-      background: transparent;
-      font-size: 11px;
-      font-weight: 700;
-      cursor: pointer;
+      padding: 6px 12px; border-radius: 8px; border: 1px solid #ddd;
+      background: transparent; font-size: 11px; font-weight: 700; cursor: pointer; color: var(--text);
     }
 
-    /* LISTA EDITÁVEL */
-    .content-area {
-      margin-top: 15px;
-      padding-top: 15px;
-      border-top: 1px dashed #eee;
-    }
-    .item-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 0;
-      border-bottom: 1px solid #f9f9f9;
-    }
-    .item-row b { color: var(--primary); font-size: 12px; min-width: 70px; }
-    .item-row input, .item-row textarea {
-      flex: 1;
-      border: none;
-      outline: none;
-      background: transparent;
-      font-family: inherit;
-      font-size: 14px;
-    }
+    .content-area { margin-top: 15px; padding-top: 15px; border-top: 1px dashed #eee; }
+    .item-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.02); }
+    .item-row b { color: var(--primary); font-size: 12px; min-width: 65px; }
+    .item-row input, .item-row textarea { flex: 1; border: none; outline: none; background: transparent; font-family: inherit; font-size: 14px; color: var(--text); }
     
     .tick-box {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      border: 2px solid #eee;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      flex-shrink: 0;
-      font-weight: bold;
+      width: 32px; height: 32px; border-radius: 8px; border: 2px solid #eee;
+      display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0;
     }
-    .tick-box.done {
-      background: linear-gradient(90deg,#6ee7b7,#34d399);
-      border: none;
-      color: white;
-    }
+    .tick-box.done { background: linear-gradient(90deg,#6ee7b7,#34d399); border: none; color: white; font-weight: bold; }
 
-    .controls-main { display: flex; gap: 10px; margin-bottom: 20px; }
-    .btn-action { padding: 10px 16px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; }
+    .controls-main { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+    .btn-action { padding: 10px 14px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; font-size: 13px; }
     .btn-black { background: #111; color: white; }
-    .btn-white { background: white; border: 1px solid #ddd; }
+    .btn-white { background: white; border: 1px solid #ddd; color: #111; }
 
-    footer {
-      padding: 20px;
-      text-align: center;
-      font-size: 13px;
-      color: var(--accent);
-      background: rgba(255,255,255,0.1);
-    }
+    footer { padding: 25px; text-align: center; font-size: 13px; color: var(--accent); }
     .toast {
       position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
       background: #111; color: #fff; padding: 10px 20px; border-radius: 50px;
@@ -244,12 +197,13 @@
     .toast.show { opacity: 1; }
   </style>
 </head>
-<body>
+<body id="body">
 
 <div class="app">
   <div class="app-title">RainbowFitness — Pro</div>
 
   <div class="profile-section">
+    <div class="night-toggle" onclick="toggleDarkMode()" id="modeIco">🌙</div>
     <div class="avatar-wrapper" onclick="document.getElementById('pInput').click()">
       <img id="uPic" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix">
     </div>
@@ -258,150 +212,130 @@
     <div class="user-info">
       <input type="text" id="uName" class="name-input" value="Seu Nome">
       <div class="stats-row">
-        <span>PESO <input type="number" id="uWeight" step="0.1" value="70"> kg</span>
-        <span>META <input type="number" id="uGoal" step="0.1" value="65"> kg</span>
+        <span>PESO <input type="number" id="uW" step="0.1" onblur="save()"></span>
+        <span>META <input type="number" id="uG" step="0.1" onblur="save()"></span>
       </div>
     </div>
 
     <div class="water-box">
-      <div style="font-size: 11px; font-weight: 800;">ÁGUA HOJE</div>
-      <div id="waterDisplay" style="font-size: 18px; font-weight: 900; color: #3b82f6;">0.0L</div>
+      <div style="font-size: 9px; font-weight: 800;">ÁGUA</div>
+      <div id="wDisp" style="font-size: 16px; font-weight: 900; color: #3b82f6;">0.0L</div>
       <div class="water-controls">
-        <button class="w-btn" onclick="updateWater(-0.25)">-</button>
-        <button class="w-btn" onclick="updateWater(0.25)">+</button>
-        <button class="w-btn" onclick="resetWater()" style="font-size: 10px;">🔄</button>
+        <button class="w-btn" onclick="updW(-0.25)">-</button>
+        <button class="w-btn" onclick="updW(0.25)">+</button>
+        <button class="w-btn" onclick="resW()">🔄</button>
       </div>
     </div>
   </div>
 
   <nav class="tabs">
-    <button class="tab-btn active" onclick="showTab('treino', this)">💪 TREINOS</button>
-    <button class="tab-btn" onclick="showTab('nutri', this)">🥗 NUTRIÇÃO</button>
+    <button class="tab-btn active" onclick="tab('treino', this)">💪 TREINOS</button>
+    <button class="tab-btn" onclick="tab('nutri', this)">🥗 NUTRIÇÃO</button>
   </nav>
 
   <main>
-    <div id="view-treino" class="page active">
+    <div id="v-treino" class="page active">
       <div class="controls-main">
-        <button class="btn-action btn-black" onclick="resetChecks()">Limpar Hoje</button>
-        <button class="btn-action btn-white" onclick="addWorkoutDay()">+ Novo Dia</button>
+        <button class="btn-action btn-black" onclick="resetChecks()">Zerar Marcações</button>
+        <button class="btn-action btn-white" onclick="addDay()">+ Novo Dia</button>
       </div>
       <div id="treino-list"></div>
     </div>
 
-    <div id="view-nutri" class="page">
+    <div id="v-nutri" class="page">
+      <div class="controls-main">
+        <button class="btn-action btn-white" onclick="addDietDay()">+ Novo Dia Dieta</button>
+      </div>
       <div id="nutri-list"></div>
     </div>
   </main>
 
-  <footer>
-    Feito com ❤️ RainbowFitness — Salvo Localmente
-  </footer>
+  <footer>Feito com ❤️ RainbowFitness — Salvo Localmente</footer>
 </div>
 
 <div class="toast" id="toast">Alteração salva!</div>
 
 <script>
-// --- BANCO DE DADOS INTEGRADO ---
-const DB_NAME = 'rainbow_fitness_god_v8';
+const DB_NAME = 'rainbow_fitness_final_v1';
 const DEFAULT_PIC = "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix";
 
 let db = JSON.parse(localStorage.getItem(DB_NAME)) || {
-  user: { name: "Seu Nome", photo: DEFAULT_PIC, weight: 70, goal: 65, water: 0 },
+  user: { name: "Seu Nome", photo: DEFAULT_PIC, weight: 70, goal: 65, water: 0, dark: false },
   treino: [
     { dia: 'Segunda — Peito/Ombro/Tríceps', exs: ['Supino reto','Supino inclinado','Crucifixo','Desenvolvimento','Elevação lateral','Tríceps corda'] },
     { dia: 'Terça — Costas/Bíceps', exs: ['Puxada frente','Remada baixa','Remada unilateral','Pulldown','Rosca direta'] },
-    { dia: 'Quarta — Glúteos/Posteriores', exs: ['Agachamento Smith','Leg press 45°','Mesa flexora','Stiff barra','Elevação pélvica','Cadeira abdutora'] },
-    { dia: 'Quinta — Ombro e Core', exs: ['Desenvolvimento Arnold','Elevação lateral halter','Elevação frontal polia','Remada alta polia','Prancha abdominal'] },
-    { dia: 'Sexta — Glúteos/Posteriores (2)', exs: ['Agachamento sumô','Avanço (afundo)','Cadeira extensora','Stiff romeno','Hip thrust unilateral','Glúteo máquina'] }
+    { dia: 'Quarta — Glúteos/Posteriores', exs: ['Agachamento Smith','Leg press 45°','Mesa flexora','Stiff barra','Elevação pélvica','Cadeira abdutora'] }
   ],
   progresso: {},
   nutri: [
     { dia: 'Segunda', cafe: '3 ovos + aveia + banana', almoco: 'Frango + arroz + feijão', pre: 'Banana + aveia', jantar: 'Sanduíche de frango', var: 'Wrap de frango' },
-    { dia: 'Terça', cafe: 'Omelete + pão integral', almoco: 'Carne moída + batata', pre: 'Iogurte + aveia', jantar: 'Tacos saudáveis', var: 'Bowl de carne' },
-    { dia: 'Quarta', cafe: 'Ovos + aveia + banana', almoco: 'Peixe + arroz + feijão', pre: 'Banana + café', jantar: 'Omelete + salada', var: 'Salmão grelhado' },
-    { dia: 'Quinta', cafe: 'Iogurte + aveia + banana', almoco: 'Frango + arroz + feijão', pre: 'Banana', jantar: 'Tacos de carne', var: 'Burrito fit' },
-    { dia: 'Sexta', cafe: 'Ovos + aveia', almoco: 'Carne + batata + salada', pre: 'Banana + aveia', jantar: 'Sanduíche proteico', var: 'Taco de frango' },
-    { dia: 'Sábado', cafe: 'Omelete + pão integral', almoco: 'Churrasco + salada', pre: 'Livre', jantar: 'Tacos ou sanduíche', var: 'Wrap proteico' },
-    { dia: 'Domingo', cafe: 'Ovos + fruta', almoco: 'Peixe ou frango', pre: 'Livre', jantar: 'Omelete leve', var: 'Sopa de legumes' }
+    { dia: 'Terça', cafe: 'Omelete + pão integral', almoco: 'Carne moída + batata', pre: 'Iogurte + aveia', jantar: 'Tacos saudáveis', var: 'Bowl de carne' }
   ]
 };
 
 function save() {
   db.user.name = document.getElementById('uName').value;
-  db.user.weight = document.getElementById('uWeight').value;
-  db.user.goal = document.getElementById('uGoal').value;
-  // A foto é salva no objeto db durante o carregamento do arquivo
+  db.user.weight = document.getElementById('uW').value;
+  db.user.goal = document.getElementById('uG').value;
   localStorage.setItem(DB_NAME, JSON.stringify(db));
   const t = document.getElementById('toast'); t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 1500);
 }
 
-function showTab(id, btn) {
+function tab(id, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('view-' + id).classList.add('active');
+  document.getElementById('v-' + id).classList.add('active');
   btn.classList.add('active');
 }
 
-// --- ÁGUA ---
-function updateWater(val) {
-  db.user.water = Math.max(0, (parseFloat(db.user.water) + val)).toFixed(2);
-  document.getElementById('waterDisplay').innerText = db.user.water + 'L';
+function toggleDarkMode() {
+  db.user.dark = !db.user.dark;
+  applyMode();
   save();
 }
-function resetWater() { if(confirm("Zerar água?")) { db.user.water = 0; document.getElementById('waterDisplay').innerText = '0.0L'; save(); } }
 
-// --- TREINO ---
+function applyMode() {
+  document.getElementById('body').classList.toggle('dark', db.user.dark);
+  document.getElementById('modeIco').innerText = db.user.dark ? '☀️' : '🌙';
+}
+
+function updW(val) {
+  db.user.water = Math.max(0, (parseFloat(db.user.water) + val)).toFixed(2);
+  document.getElementById('wDisp').innerText = db.user.water + 'L';
+  save();
+}
+
+function resW() { if(confirm("Zerar água?")) { db.user.water = 0; document.getElementById('wDisp').innerText = '0.0L'; save(); } }
+
 function renderTreino() {
   const container = document.getElementById('treino-list');
   container.innerHTML = '';
   db.treino.forEach((item, dIdx) => {
     const card = document.createElement('div'); card.className = 'card';
     const color = ['#ff5f6d','#ffc371','#fff76b','#8cf56b','#5fe3ff'][dIdx % 5];
-    
-    let exsHtml = item.exs.map((ex, eIdx) => {
+    let exs = item.exs.map((ex, eIdx) => {
       const done = db.progresso[item.dia] && db.progresso[item.dia][ex];
-      return `
-        <div class="item-row">
-          <div class="tick-box ${done?'done':''}" onclick="toggleCheck(${dIdx}, ${eIdx}, this)">${done?'✓':''}</div>
-          <input type="text" value="${ex}" onblur="db.treino[${dIdx}].exs[${eIdx}]=this.value; save();">
-          <button style="border:none; background:none; cursor:pointer; opacity:0.2;" onclick="removeEx(${dIdx}, ${eIdx})">✕</button>
-        </div>`;
+      return `<div class="item-row">
+        <div class="tick-box ${done?'done':''}" onclick="toggleCheck(${dIdx}, ${eIdx}, this)">${done?'✓':''}</div>
+        <input type="text" value="${ex}" onblur="db.treino[${dIdx}].exs[${eIdx}]=this.value; save();">
+        <button style="border:none; background:none; cursor:pointer; opacity:0.3;" onclick="removeEx(${dIdx}, ${eIdx})">✕</button>
+      </div>`;
     }).join('');
 
     card.innerHTML = `
       <div class="card-header">
-        <div class="card-title-wrap">
-          <div class="dot" style="background:${color}"></div>
-          <input type="text" style="font-weight:800; border:none; outline:none; background:transparent;" value="${item.dia}" onblur="updateDayTitle(${dIdx}, this.value)">
+        <div class="card-title-wrap"><div class="dot" style="background:${color}"></div>
+        <input type="text" style="font-weight:800; border:none; outline:none; background:transparent; color:inherit; flex:1;" value="${item.dia}" onblur="db.treino[${dIdx}].dia=this.value; save();">
         </div>
-        <button class="btn-expand" onclick="toggleExpand(this)">EXPANDIR</button>
+        <button class="btn-expand" onclick="exp(this)">EXPANDIR</button>
+        <button style="border:none; background:none; cursor:pointer; font-size:16px; margin-left:5px;" onclick="removeDay(${dIdx})">🗑️</button>
       </div>
-      <div class="content-area" style="display:none">
-        ${exsHtml}
-        <button class="btn-action btn-white" style="width:100%; margin-top:10px; font-size:12px;" onclick="addExToDay(${dIdx})">+ Exercício</button>
-      </div>`;
+      <div class="content-area" style="display:none">${exs}<button class="btn-action btn-white" style="width:100%; margin-top:10px; font-size:11px;" onclick="addEx(${dIdx})">+ Exercício</button></div>`;
     container.appendChild(card);
   });
 }
 
-function toggleExpand(btn) {
-  const content = btn.parentElement.nextElementSibling;
-  const isHidden = content.style.display === 'none';
-  content.style.display = isHidden ? 'block' : 'none';
-  btn.textContent = isHidden ? 'RECOLHER' : 'EXPANDIR';
-}
-
-function toggleCheck(dIdx, eIdx, el) {
-  const dia = db.treino[dIdx].dia;
-  const ex = db.treino[dIdx].exs[eIdx];
-  db.progresso[dia] = db.progresso[dia] || {};
-  const active = !el.classList.contains('done');
-  el.classList.toggle('done'); el.innerHTML = active ? '✓' : '';
-  db.progresso[dia][ex] = active; save();
-}
-
-// --- NUTRIÇÃO ---
 function renderNutri() {
   const container = document.getElementById('nutri-list');
   container.innerHTML = '';
@@ -409,63 +343,69 @@ function renderNutri() {
     const card = document.createElement('div'); card.className = 'card';
     card.innerHTML = `
       <div class="card-header">
-        <div class="card-title-wrap"><b>${m.dia}</b></div>
-        <button class="btn-expand" onclick="toggleExpand(this)">EXPANDIR</button>
+        <div class="card-title-wrap">
+          <input type="text" style="font-weight:800; border:none; outline:none; background:transparent; color:inherit; flex:1;" value="${m.dia}" onblur="db.nutri[${i}].dia=this.value; save();">
+        </div>
+        <button class="btn-expand" onclick="exp(this)">EXPANDIR</button>
+        <button style="border:none; background:none; cursor:pointer; font-size:16px; margin-left:5px;" onclick="removeDietDay(${i})">🗑️</button>
       </div>
       <div class="content-area" style="display:none">
         <div class="item-row"><b>CAFÉ:</b><input value="${m.cafe}" onblur="db.nutri[${i}].cafe=this.value; save();"></div>
         <div class="item-row"><b>ALMOÇO:</b><input value="${m.almoco}" onblur="db.nutri[${i}].almoco=this.value; save();"></div>
         <div class="item-row"><b>PRÉ:</b><input value="${m.pre}" onblur="db.nutri[${i}].pre=this.value; save();"></div>
         <div class="item-row"><b>JANTAR:</b><input value="${m.jantar}" onblur="db.nutri[${i}].jantar=this.value; save();"></div>
-        <div class="item-row"><b>VARIAÇÕES:</b><textarea onblur="db.nutri[${i}].var=this.value; save();">${m.var}</textarea></div>
+        <div class="item-row"><b>VAR:</b><textarea onblur="db.nutri[${i}].var=this.value; save();">${m.var}</textarea></div>
       </div>`;
     container.appendChild(card);
   });
 }
 
-// --- FUNÇÕES DE EDIÇÃO ---
-function updateEx(dIdx, eIdx, val) { db.treino[dIdx].exs[eIdx] = val; save(); }
-function updateDayTitle(idx, val) { db.treino[idx].dia = val; save(); }
-function addWorkoutDay() { db.treino.push({ dia: "Novo Dia", exs: [] }); renderTreino(); save(); }
-function addExToDay(idx) { db.treino[idx].exs.push("Novo Exercício"); renderTreino(); save(); }
-function removeEx(dIdx, eIdx) { if(confirm("Excluir?")){ db.treino[dIdx].exs.splice(eIdx, 1); renderTreino(); save(); } }
-function resetChecks() { if(confirm("Zerar treinos de hoje?")) { db.progresso = {}; renderTreino(); save(); } }
+function exp(btn) {
+  const content = btn.parentElement.nextElementSibling;
+  const isH = content.style.display === 'none';
+  content.style.display = isH ? 'block' : 'none';
+  btn.textContent = isH ? 'RECOLHER' : 'EXPANDIR';
+}
 
-// --- INICIALIZAÇÃO DE PERFIL E DADOS ---
-function initApp() {
+function toggleCheck(dIdx, eIdx, el) {
+  const day = db.treino[dIdx].dia; const ex = db.treino[dIdx].exs[eIdx];
+  db.progresso[day] = db.progresso[day] || {};
+  const ok = !el.classList.contains('done');
+  el.classList.toggle('done'); el.innerHTML = ok ? '✓' : '';
+  db.progresso[day][ex] = ok; save();
+}
+
+function addDay() { db.treino.push({ dia: "Novo Dia", exs: [] }); renderTreino(); save(); }
+function removeDay(idx) { if(confirm("Remover dia?")) { db.treino.splice(idx, 1); renderTreino(); save(); } }
+function addEx(idx) { db.treino[idx].exs.push("Novo Exercício"); renderTreino(); save(); }
+function removeEx(dIdx, eIdx) { db.treino[dIdx].exs.splice(eIdx, 1); renderTreino(); save(); }
+function addDietDay() { db.nutri.push({ dia: "Novo Dia", cafe:'', almoco:'', pre:'', jantar:'', var:'' }); renderNutri(); save(); }
+function removeDietDay(idx) { if(confirm("Remover dia dieta?")) { db.nutri.splice(idx, 1); renderNutri(); save(); } }
+function resetChecks() { if(confirm("Zerar marcações?")) { db.progresso = {}; renderTreino(); save(); } }
+
+function init() {
   document.getElementById('uName').value = db.user.name;
-  document.getElementById('uWeight').value = db.user.weight;
-  document.getElementById('uGoal').value = db.user.goal;
-  document.getElementById('waterDisplay').innerText = (db.user.water || 0) + 'L';
+  document.getElementById('uW').value = db.user.weight;
+  document.getElementById('uG').value = db.user.goal;
+  document.getElementById('wDisp').innerText = (db.user.water || 0) + 'L';
+  document.getElementById('uPic').src = db.user.photo || DEFAULT_PIC;
+  applyMode(); renderTreino(); renderNutri();
   
-  // Garante que a foto carregada do banco seja exibida
-  const picEl = document.getElementById('uPic');
-  picEl.src = db.user.photo || DEFAULT_PIC;
-
   document.getElementById('pInput').onchange = e => {
     const file = e.target.files[0];
     if (file) {
       const r = new FileReader();
       r.onload = () => {
-        const base64Pic = r.result;
-        db.user.photo = base64Pic; // Salva a string da imagem no banco
-        document.getElementById('uPic').src = base64Pic;
+        db.user.photo = r.result;
+        document.getElementById('uPic').src = r.result;
         save();
       };
       r.readAsDataURL(file);
     }
   };
-
   document.getElementById('uName').onblur = save;
-  document.getElementById('uWeight').onblur = save;
-  document.getElementById('uGoal').onblur = save;
-
-  renderTreino();
-  renderNutri();
 }
-
-// Chamada inicial
-initApp();
+init();
 </script>
 </body>
 </html>
