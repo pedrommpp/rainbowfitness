@@ -54,13 +54,23 @@
       margin-bottom: 50px;
     }
 
+    /* TÍTULO DO APP NO TOPO */
+    .app-title {
+      padding: 20px 24px 10px;
+      font-size: 26px;
+      font-weight: 900;
+      color: #111;
+      text-align: left;
+      letter-spacing: -1px;
+    }
+
     /* PERFIL E DASHBOARD */
     .profile-section {
-      padding: 24px;
+      padding: 10px 24px 24px;
       display: flex;
       align-items: center;
       gap: 16px;
-      background: rgba(255,255,255,0.4);
+      background: rgba(255,255,255,0.0);
       border-bottom: 1px solid rgba(0,0,0,0.05);
       flex-wrap: wrap;
     }
@@ -73,6 +83,7 @@
       box-shadow: 0 4px 10px rgba(0,0,0,0.1);
       cursor: pointer;
       flex-shrink: 0;
+      background: #eee;
     }
     .avatar-wrapper img { width: 100%; height: 100%; object-fit: cover; }
     
@@ -236,6 +247,8 @@
 <body>
 
 <div class="app">
+  <div class="app-title">RainbowFitness — Pro</div>
+
   <div class="profile-section">
     <div class="avatar-wrapper" onclick="document.getElementById('pInput').click()">
       <img id="uPic" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix">
@@ -289,9 +302,11 @@
 
 <script>
 // --- BANCO DE DADOS INTEGRADO ---
-const DB_NAME = 'rainbow_fitness_god_v7';
+const DB_NAME = 'rainbow_fitness_god_v8';
+const DEFAULT_PIC = "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix";
+
 let db = JSON.parse(localStorage.getItem(DB_NAME)) || {
-  user: { name: "Usuário VIP", photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix", weight: 70, goal: 65, water: 0 },
+  user: { name: "Seu Nome", photo: DEFAULT_PIC, weight: 70, goal: 65, water: 0 },
   treino: [
     { dia: 'Segunda — Peito/Ombro/Tríceps', exs: ['Supino reto','Supino inclinado','Crucifixo','Desenvolvimento','Elevação lateral','Tríceps corda'] },
     { dia: 'Terça — Costas/Bíceps', exs: ['Puxada frente','Remada baixa','Remada unilateral','Pulldown','Rosca direta'] },
@@ -315,6 +330,7 @@ function save() {
   db.user.name = document.getElementById('uName').value;
   db.user.weight = document.getElementById('uWeight').value;
   db.user.goal = document.getElementById('uGoal').value;
+  // A foto é salva no objeto db durante o carregamento do arquivo
   localStorage.setItem(DB_NAME, JSON.stringify(db));
   const t = document.getElementById('toast'); t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 1500);
@@ -348,7 +364,7 @@ function renderTreino() {
       return `
         <div class="item-row">
           <div class="tick-box ${done?'done':''}" onclick="toggleCheck(${dIdx}, ${eIdx}, this)">${done?'✓':''}</div>
-          <input type="text" value="${ex}" onblur="updateEx(${dIdx}, ${eIdx}, this.value)">
+          <input type="text" value="${ex}" onblur="db.treino[${dIdx}].exs[${eIdx}]=this.value; save();">
           <button style="border:none; background:none; cursor:pointer; opacity:0.2;" onclick="removeEx(${dIdx}, ${eIdx})">✕</button>
         </div>`;
     }).join('');
@@ -415,24 +431,41 @@ function addExToDay(idx) { db.treino[idx].exs.push("Novo Exercício"); renderTre
 function removeEx(dIdx, eIdx) { if(confirm("Excluir?")){ db.treino[dIdx].exs.splice(eIdx, 1); renderTreino(); save(); } }
 function resetChecks() { if(confirm("Zerar treinos de hoje?")) { db.progresso = {}; renderTreino(); save(); } }
 
-// --- PERFIL ---
-document.getElementById('uName').value = db.user.name;
-document.getElementById('uWeight').value = db.user.weight;
-document.getElementById('uGoal').value = db.user.goal;
-document.getElementById('waterDisplay').innerText = (db.user.water || 0) + 'L';
-document.getElementById('uPic').src = db.user.photo;
-document.getElementById('pInput').onchange = e => {
-  const r = new FileReader();
-  r.onload = () => { db.user.photo = r.result; document.getElementById('uPic').src = r.result; save(); };
-  r.readAsDataURL(e.target.files[0]);
-};
+// --- INICIALIZAÇÃO DE PERFIL E DADOS ---
+function initApp() {
+  document.getElementById('uName').value = db.user.name;
+  document.getElementById('uWeight').value = db.user.weight;
+  document.getElementById('uGoal').value = db.user.goal;
+  document.getElementById('waterDisplay').innerText = (db.user.water || 0) + 'L';
+  
+  // Garante que a foto carregada do banco seja exibida
+  const picEl = document.getElementById('uPic');
+  picEl.src = db.user.photo || DEFAULT_PIC;
 
-document.getElementById('uName').onblur = save;
-document.getElementById('uWeight').onblur = save;
-document.getElementById('uGoal').onblur = save;
+  document.getElementById('pInput').onchange = e => {
+    const file = e.target.files[0];
+    if (file) {
+      const r = new FileReader();
+      r.onload = () => {
+        const base64Pic = r.result;
+        db.user.photo = base64Pic; // Salva a string da imagem no banco
+        document.getElementById('uPic').src = base64Pic;
+        save();
+      };
+      r.readAsDataURL(file);
+    }
+  };
 
-renderTreino();
-renderNutri();
+  document.getElementById('uName').onblur = save;
+  document.getElementById('uWeight').onblur = save;
+  document.getElementById('uGoal').onblur = save;
+
+  renderTreino();
+  renderNutri();
+}
+
+// Chamada inicial
+initApp();
 </script>
 </body>
 </html>
