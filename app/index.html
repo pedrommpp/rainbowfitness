@@ -2,8 +2,8 @@
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>RainbowFitness — Treino Interativo</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
+  <title>RainbowFitness — Pro</title>
 
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#ff5f6d">
@@ -11,101 +11,101 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
 
   <style>
-    :root { --card-bg: rgba(255,255,255,0.92); --accent: rgba(0,0,0,0.7); }
+    :root { --card-bg: rgba(255,255,255,0.95); --accent: #666; }
     
-    /* CORREÇÃO DE ROLAGEM ANDROID */
-    html, body { 
-      margin: 0; 
-      padding: 0; 
-      min-height: 100vh;
-      font-family: Inter, system-ui, sans-serif;
-    }
+    html, body { margin: 0; padding: 0; min-height: 100vh; font-family: 'Inter', system-ui, sans-serif; }
     
     body {
       background: linear-gradient(120deg,#ff5f6d 0%,#ffc371 20%,#fff76b 35%,#8cf56b 50%,#5fe3ff 65%,#8a7bff 80%,#ff7bdb 100%);
       background-attachment: fixed;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 20px;
-      box-sizing: border-box;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 15px; box-sizing: border-box;
     }
 
     .app {
-      width: 100%;
-      max-width: 920px;
-      background: var(--card-bg);
-      border-radius: 18px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
-      backdrop-filter: blur(6px);
-      margin-bottom: 40px;
+      width: 100%; max-width: 600px; background: var(--card-bg);
+      border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+      backdrop-filter: blur(10px); margin-bottom: 50px; overflow: hidden;
     }
 
-    header { padding: 18px 24px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-    .logo { width: 56px; height: 56px; border-radius: 12px; background: #eee url('icons/logo.png') center/cover; }
-    h1 { margin: 0; font-size: 20px; }
-    p.lead { margin: 0; color: var(--accent); font-size: 13px; }
+    /* SEÇÃO DE PERFIL */
+    .profile-header {
+      padding: 20px; display: flex; align-items: center; gap: 15px;
+      background: rgba(255,255,255,0.5); border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    .avatar-wrapper {
+      width: 65px; height: 65px; border-radius: 20px; overflow: hidden;
+      background: #eee; border: 2px solid white; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      cursor: pointer; flex-shrink: 0;
+    }
+    .avatar-wrapper img { width: 100%; height: 100%; object-fit: cover; }
     
-    main { padding: 18px 24px; }
-    .days { display: grid; grid-template-columns: 1fr; gap: 12px; }
-    @media(min-width:820px) { .days { grid-template-columns: repeat(2, 1fr); } }
+    .user-info { flex: 1; }
+    .user-info input {
+      background: transparent; border: none; font-size: 18px; font-weight: 800;
+      color: #111; width: 100%; outline: none; padding: 2px 0;
+      border-bottom: 2px solid transparent;
+    }
+    .user-info input:focus { border-bottom-color: #ff5f6d; }
+    .user-info p { margin: 0; font-size: 11px; color: var(--accent); text-transform: uppercase; letter-spacing: 1px; }
 
-    .day-card { background: white; border-radius: 12px; padding: 12px; border: 1px solid rgba(0,0,0,0.05); }
-    .day-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-    .day-title { display: flex; align-items: center; gap: 12px; }
-    .dot { width: 12px; height: 12px; border-radius: 4px; }
+    /* BOTÕES E LISTA */
+    header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+    .logo-mini { width: 30px; height: 30px; background: url('icons/logo.png') center/contain no-repeat; }
     
-    .ex-list { margin-top: 10px; padding-top: 10px; border-top: 1px dashed rgba(0,0,0,0.1); }
-    .ex { display: flex; align-items: center; gap: 12px; padding: 10px 4px; border-bottom: 1px solid rgba(0,0,0,0.03); }
-    .ex label { flex: 1; cursor: pointer; font-size: 14px; }
-    
-    .tick { width: 36px; height: 36px; border-radius: 8px; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
-    .tick.checked { background: #34d399; color: white; border: none; }
-    
+    main { padding: 0 20px 20px; }
     .controls { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 15px; }
-    .btn { padding: 10px 14px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600; font-size: 13px; }
-    .btn.ghost { background: white; border: 1px solid #ddd; }
-    .btn.primary { background: #111; color: white; }
+    .btn { padding: 10px 14px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; font-size: 12px; transition: 0.2s; }
+    .btn-primary { background: #111; color: white; }
+    .btn-ghost { background: white; border: 1px solid #ddd; color: #555; }
     
-    .footer { padding: 14px 24px; font-size: 12px; color: var(--accent); display: flex; justify-content: space-between; }
-    .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #111; color: #fff; padding: 12px 20px; border-radius: 50px; opacity: 0; transition: 0.3s; pointer-events: none; }
-    .toast.show { opacity: 1; }
-    input[type='checkbox'] { display: none; }
+    .day-card { background: white; border-radius: 18px; padding: 15px; margin-bottom: 12px; border: 1px solid rgba(0,0,0,0.03); }
+    .day-head { display: flex; align-items: center; justify-content: space-between; }
+    .dot { width: 10px; height: 10px; border-radius: 30%; margin-right: 10px; display: inline-block; }
+    
+    .ex-list { margin-top: 10px; border-top: 1px dashed #eee; padding-top: 10px; }
+    .ex { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid #f9f9f9; }
+    .ex label { flex: 1; font-size: 14px; color: #333; }
+    
+    .tick { width: 32px; height: 32px; border-radius: 10px; border: 2px solid #eee; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; font-weight: bold; }
+    .tick.checked { background: #4ade80; border-color: #4ade80; color: white; }
+
+    .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #333; color: white; padding: 10px 20px; border-radius: 50px; font-size: 13px; opacity: 0; transition: 0.3s; z-index: 100; pointer-events: none; }
+    .toast.show { opacity: 1; bottom: 30px; }
   </style>
 </head>
 <body>
 
 <div class="app">
-  <header>
-    <div class="logo"></div>
-    <div style="flex:1">
-      <h1>RainbowFitness</h1>
-      <p class="lead">Clique no exercício para marcar ou no nome para editar.</p>
+  <div class="profile-header">
+    <div class="avatar-wrapper" onclick="document.getElementById('photoInput').click()">
+      <img id="userPhoto" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="Perfil">
     </div>
-    <button class="btn primary" id="installBtn" style="display:none">Instalar App</button>
+    <input type="file" id="photoInput" hidden accept="image/*">
+    <div class="user-info">
+      <p>Atleta RainbowFitness</p>
+      <input type="text" id="userName" value="Seu Nome" placeholder="Toque para mudar">
+    </div>
+    <div class="logo-mini"></div>
+  </div>
+
+  <header>
+    <button class="btn btn-primary" id="installBtn" style="display:none">Instalar App</button>
   </header>
 
   <main>
     <div class="controls">
-      <button class="btn primary" id="clearAll">Zerar Checks</button>
-      <button class="btn ghost" id="addEx">➕ Novo Exercício</button>
-      <button class="btn ghost" id="exportBtn">Exportar</button>
-      <button class="btn ghost" id="importBtn">Importar</button>
-      <input type="file" id="importFile" accept="application/json" style="display:none" />
+      <button class="btn btn-primary" id="clearAll">Zerar Tudo</button>
+      <button class="btn btn-ghost" id="addEx">➕ Novo Exercício</button>
+      <button class="btn btn-ghost" onclick="exportData()">Exportar</button>
     </div>
     <section class="days" id="days"></section>
   </main>
-
-  <footer class="footer">
-    <div>Feito com ❤️ RainbowFitness</div>
-    <div>Salvo Localmente</div>
-  </footer>
 </div>
 
 <div class="toast" id="toast">Salvo!</div>
 
 <script>
-// Dados Iniciais
 const DEFAULT_TREINO = {
   'Segunda — Peito/Ombro/Tríceps':['Supino reto','Supino inclinado','Crucifixo','Desenvolvimento ombro','Elevação lateral','Tríceps corda'],
   'Terça — Costas/Bíceps':['Puxada frente','Remada baixa','Remada unilateral','Pulldown','Rosca direta'],
@@ -114,133 +114,107 @@ const DEFAULT_TREINO = {
   'Sexta — Glúteos/Posteriores':['Agachamento sumô','Avanço','Cadeira extensora','Stiff romeno','Hip thrust unilateral','Glúteo 4 apoios']
 };
 
-const STORAGE_KEY = 'rainbowfitness_progress_v1';
-const CONFIG_KEY = 'rainbowfitness_config_v1'; // Salva os nomes dos exercícios
+const STORAGE_KEY = 'rf_progress_v2';
+const CONFIG_KEY = 'rf_config_v2';
+const USER_KEY = 'rf_user_v2';
 
-let TREINO = JSON.parse(localStorage.getItem(CONFIG_KEY)) || DEFAULT_TREINO;
-const daysEl = document.getElementById('days');
+let state = JSON.parse(localStorage.getItem(CONFIG_KEY)) || DEFAULT_TREINO;
+let userData = JSON.parse(localStorage.getItem(USER_KEY)) || { name: "Seu Nome", photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" };
 
-function showToast(msg){
-  const t = document.getElementById('toast');
-  t.textContent = msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 1500);
+function saveAll() {
+  localStorage.setItem(CONFIG_KEY, JSON.stringify(state));
+  userData.name = document.getElementById('userName').value;
+  localStorage.setItem(USER_KEY, JSON.stringify(userData));
 }
 
-function loadProgress(){ return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {}; }
-function saveProgress(obj){ localStorage.setItem(STORAGE_KEY, JSON.stringify(obj)); showToast('Progresso salvo!'); }
-function saveConfig(){ localStorage.setItem(CONFIG_KEY, JSON.stringify(TREINO)); }
+function build() {
+  const progress = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+  const container = document.getElementById('days');
+  container.innerHTML = '';
+  document.getElementById('userName').value = userData.name;
+  document.getElementById('userPhoto').src = userData.photo;
 
-function build(){
-  const progress = loadProgress();
-  daysEl.innerHTML = '';
-  
-  Object.entries(TREINO).forEach(([day, exs], idx) => {
-    const card = document.createElement('article'); card.className = 'day-card';
+  Object.entries(state).forEach(([day, exs], idx) => {
+    const card = document.createElement('div'); card.className = 'day-card';
     const color = ['#ff5f6d','#ffc371','#fff76b','#8cf56b','#5fe3ff'][idx % 5];
     
-    card.innerHTML = `
-      <div class="day-head">
-        <div class="day-title">
-          <div class="dot" style="background:${color}"></div>
-          <strong>${day}</strong>
+    let exHtml = exs.map((ex, i) => {
+      const checked = progress[day] && progress[day][ex];
+      return `
+        <div class="ex">
+          <label onclick="editEx('${day}', ${i})">${ex}</label>
+          <div class="tick ${checked?'checked':''}" onclick="toggleCheck('${day}', '${ex}', this)">${checked?'✓':''}</div>
+          <span onclick="delEx('${day}', ${i})" style="cursor:pointer; opacity:0.3">✕</span>
         </div>
-        <button class="btn ghost toggle-btn">Expandir</button>
-      </div>
-      <div class="ex-list" style="display:none"></div>
-    `;
-
-    const exList = card.querySelector('.ex-list');
-    exs.forEach((ex, i) => {
-      const row = document.createElement('div'); row.className = 'ex';
-      const isChecked = progress[day] && progress[day][ex];
-      
-      row.innerHTML = `
-        <label>${ex}</label>
-        <div class="tick ${isChecked?'checked':''}">${isChecked?'✓':''}</div>
-        <button class="del-btn" style="background:none; border:none; cursor:pointer">🗑️</button>
       `;
+    }).join('');
 
-      // Eventos
-      row.querySelector('.tick').onclick = () => {
-        const cur = loadProgress();
-        cur[day] = cur[day] || {};
-        const active = !row.querySelector('.tick').classList.contains('checked');
-        
-        row.querySelector('.tick').classList.toggle('checked');
-        row.querySelector('.tick').innerHTML = active ? '✓' : '';
-        cur[day][ex] = active;
-        saveProgress(cur);
-      };
-
-      row.querySelector('label').onclick = () => {
-        const newName = prompt('Editar nome:', ex);
-        if(newName) { TREINO[day][i] = newName; saveConfig(); build(); }
-      };
-
-      row.querySelector('.del-btn').onclick = () => {
-        if(confirm('Excluir?')) { TREINO[day].splice(i, 1); saveConfig(); build(); }
-      };
-
-      exList.appendChild(row);
-    });
-
-    card.querySelector('.toggle-btn').onclick = (e) => {
-      const isHidden = exList.style.display === 'none';
-      exList.style.display = isHidden ? 'block' : 'none';
-      e.target.textContent = isHidden ? 'Recolher' : 'Expandir';
-    };
-
-    daysEl.appendChild(card);
+    card.innerHTML = `
+      <div class="day-head" onclick="toggleList(this)">
+        <div style="font-weight:800"><span class="dot" style="background:${color}"></span>${day}</div>
+        <span style="font-size:10px; color:#999">V</span>
+      </div>
+      <div class="ex-list" style="display:none">${exHtml}</div>
+    `;
+    container.appendChild(card);
   });
 }
 
-// Botões de Ação
-document.getElementById('clearAll').onclick = () => {
-  if(confirm('Zerar marcações?')){ localStorage.removeItem(STORAGE_KEY); build(); }
+function toggleCheck(day, ex, el) {
+  const progress = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+  progress[day] = progress[day] || {};
+  const isActive = !el.classList.contains('checked');
+  el.classList.toggle('checked');
+  el.innerHTML = isActive ? '✓' : '';
+  progress[day][ex] = isActive;
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(progress));
+  showToast('Progresso salvo');
+}
+
+function toggleList(el) {
+  const list = el.nextElementSibling;
+  list.style.display = list.style.display === 'none' ? 'block' : 'none';
+}
+
+function editEx(day, i) {
+  const n = prompt("Novo nome:", state[day][i]);
+  if(n) { state[day][i] = n; saveAll(); build(); }
+}
+
+function delEx(day, i) {
+  if(confirm("Excluir?")) { state[day].splice(i, 1); saveAll(); build(); }
+}
+
+function showToast(m) {
+  const t = document.getElementById('toast'); t.innerText = m;
+  t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 1500);
+}
+
+// Upload de Foto
+document.getElementById('photoInput').onchange = e => {
+  const reader = new FileReader();
+  reader.onload = () => { userData.photo = reader.result; saveAll(); build(); };
+  reader.readAsDataURL(e.target.files[0]);
 };
+
+document.getElementById('userName').onblur = saveAll;
 
 document.getElementById('addEx').onclick = () => {
-  const day = prompt('Em qual dia? (Ex: Segunda — Peito/Ombro/Tríceps)');
-  if(!TREINO[day]) return alert('Dia não encontrado!');
-  const name = prompt('Nome do exercício:');
-  if(name) { TREINO[day].push(name); saveConfig(); build(); }
+  const d = prompt("Qual dia?");
+  if(!state[d]) return alert("Dia inválido!");
+  const n = prompt("Nome do exercício:");
+  if(n) { state[d].push(n); saveAll(); build(); }
 };
 
-document.getElementById('exportBtn').onclick = () => {
-  const data = { progress: loadProgress(), config: TREINO };
-  const blob = new Blob([JSON.stringify(data)], {type:'application/json'});
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
-  a.download = 'rainbow_fitness.json'; a.click();
-};
-
-document.getElementById('importBtn').onclick = () => document.getElementById('importFile').click();
-document.getElementById('importFile').onchange = async (e) => {
-  const file = e.target.files[0];
-  if(file){
-    const text = await file.text();
-    const data = JSON.parse(text);
-    if(data.config) {
-      TREINO = data.config; saveConfig();
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data.progress));
-      build(); showToast('Importado!');
-    }
-  }
+document.getElementById('clearAll').onclick = () => {
+  if(confirm("Zerar todos os checks?")) { localStorage.removeItem(STORAGE_KEY); build(); }
 };
 
 // PWA
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault(); deferredPrompt = e;
-  document.getElementById('installBtn').style.display = 'block';
-});
-document.getElementById('installBtn').onclick = () => {
-  deferredPrompt.prompt();
-  deferredPrompt.userChoice.then(() => { deferredPrompt = null; document.getElementById('installBtn').style.display = 'none'; });
-};
-
-if('serviceWorker' in navigator) { 
-  navigator.serviceWorker.register('./sw.js').catch(err => console.log(err)); 
-}
+let defP;
+window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); defP = e; document.getElementById('installBtn').style.display='block'; });
+document.getElementById('installBtn').onclick = () => { defP.prompt(); defP.userChoice.then(()=> {defP=null; document.getElementById('installBtn').style.display='none';}); };
+if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
 
 build();
 </script>
