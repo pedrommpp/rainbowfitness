@@ -3,230 +3,237 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=0">
-  <title>RainbowFitness — Pro</title>
+  <title>RainbowFitness — Ultra Pro</title>
 
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#ff5f6d">
-  <meta name="mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-
+  
   <style>
     :root { 
       --card-bg: rgba(255,255,255,0.92); 
-      --accent: rgba(0,0,0,0.7); 
+      --accent: rgba(0,0,0,0.6); 
+      --primary: #ff5f6d;
     }
     
-    html, body { margin: 0; padding: 0; min-height: 100vh; font-family: Inter, system-ui, sans-serif; }
+    body.dark {
+      --card-bg: rgba(30,30,30,0.95);
+      --accent: rgba(255,255,255,0.6);
+      color: white;
+    }
+
+    html, body { margin: 0; padding: 0; min-height: 100vh; font-family: 'Inter', sans-serif; overflow-x: hidden; }
     
     body {
-      background: linear-gradient(-45deg, #ff4d4d,#ff944d,#ffe44d,#4dff88,#4dd2ff,#b84dff);
+      background: linear-gradient(-45deg, #ff4d4d, #ff944d, #ffe44d, #4dff88, #4dd2ff, #b84dff);
       background-size: 400% 400%;
       animation: gradient 15s ease infinite;
-      display: flex; flex-direction: column; align-items: center; padding: 20px; box-sizing: border-box;
+      display: flex; flex-direction: column; align-items: center; padding: 15px; box-sizing: border-box;
     }
-
     @keyframes gradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-    .app {
-      width: 100%; max-width: 920px; background: var(--card-bg);
-      border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.18);
-      overflow: hidden; backdrop-filter: blur(10px); margin-bottom: 40px;
-    }
+    .app { width: 100%; max-width: 700px; background: var(--card-bg); border-radius: 28px; box-shadow: 0 15px 35px rgba(0,0,0,0.2); backdrop-filter: blur(12px); overflow: hidden; transition: 0.3s; }
 
-    /* PERFIL */
-    .profile-header {
-      padding: 15px 24px; display: flex; align-items: center; gap: 16px;
-      background: rgba(255,255,255,0.3); border-bottom: 1px solid rgba(0,0,0,0.05);
-    }
-    .avatar-wrapper {
-      width: 55px; height: 55px; border-radius: 15px; overflow: hidden;
-      background: #eee; border: 2px solid white; cursor: pointer;
-    }
+    /* HEADER & PERFIL */
+    .profile-section { padding: 20px; display: flex; align-items: center; gap: 15px; background: rgba(255,255,255,0.2); border-bottom: 1px solid rgba(0,0,0,0.05); position: relative; }
+    .avatar-wrapper { width: 60px; height: 60px; border-radius: 18px; overflow: hidden; border: 2px solid white; cursor: pointer; flex-shrink: 0; }
     .avatar-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-    .user-info input { background: transparent; border: none; font-size: 18px; font-weight: 800; color: #111; outline: none; width: 100%; }
+    .user-meta { flex: 1; }
+    .user-meta input.name-in { background: transparent; border: none; font-size: 20px; font-weight: 800; color: inherit; outline: none; width: 100%; }
+    
+    /* PROGRESSO DE PESO */
+    .stats-row { display: flex; gap: 10px; margin-top: 5px; font-size: 12px; font-weight: bold; }
+    .stat-box { display: flex; flex-direction: column; }
+    .stat-box input { background: rgba(0,0,0,0.05); border: none; border-radius: 5px; width: 45px; padding: 2px; text-align: center; font-weight: bold; color: var(--primary); }
 
-    /* NAVEGAÇÃO (TABS) */
-    .tabs { display: flex; gap: 10px; padding: 10px 24px; background: rgba(255,255,255,0.2); }
-    .tab-btn { 
-      flex: 1; padding: 12px; border: none; border-radius: 12px; 
-      font-weight: bold; cursor: pointer; transition: 0.3s; background: rgba(0,0,0,0.05); 
-    }
-    .tab-btn.active { background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+    /* TABS */
+    .nav-tabs { display: flex; padding: 10px 20px; gap: 10px; }
+    .tab-link { flex: 1; padding: 12px; border: none; border-radius: 14px; font-weight: 800; cursor: pointer; background: rgba(0,0,0,0.05); transition: 0.3s; color: var(--accent); }
+    .tab-link.active { background: white; color: #111; box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
 
-    main { padding: 20px 24px; }
+    main { padding: 0 20px 20px; }
     .page { display: none; }
     .page.active { display: block; }
 
-    /* CARDS */
-    .card { background: white; border-radius: 18px; padding: 18px; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.03); }
-    .card h2 { margin: 0 0 10px 0; font-size: 18px; color: #111; display: flex; justify-content: space-between; align-items: center; }
+    /* CARDS GOD LEVEL */
+    .card { background: white; border-radius: 20px; padding: 18px; margin-bottom: 15px; border: 1px solid rgba(0,0,0,0.03); box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+    body.dark .card { background: rgba(50,50,50,0.5); border-color: rgba(255,255,255,0.05); }
     
-    /* ESTILO NUTRIÇÃO */
-    .meal-row { display: flex; gap: 10px; margin-bottom: 8px; font-size: 14px; align-items: baseline; }
-    .meal-row b { min-width: 80px; color: #555; }
-    .meal-input { flex: 1; border: none; border-bottom: 1px dashed #ddd; outline: none; padding: 2px 0; font-family: inherit; font-size: 14px; background: transparent; }
-    .meal-input:focus { border-bottom-color: #ff5f6d; background: #fffdfd; }
+    .card-title { font-weight: 800; display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+    .editable-list { display: flex; flex-direction: column; gap: 10px; }
+    .item-row { display: flex; align-items: center; gap: 10px; padding: 5px 0; border-bottom: 1px solid rgba(0,0,0,0.03); }
+    .item-row input { flex: 1; border: none; background: transparent; font-size: 14px; color: inherit; outline: none; }
     
-    /* ESTILO TREINO */
-    .ex-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f5f5f5; }
-    .tick { width: 32px; height: 32px; border-radius: 10px; border: 2px solid #eee; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
-    .tick.checked { background: #4ade80; border-color: #4ade80; color: white; }
+    .check-circle { width: 28px; height: 28px; border-radius: 10px; border: 2px solid #eee; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; flex-shrink: 0; }
+    .check-circle.checked { background: linear-gradient(90deg,#6ee7b7,#34d399); border: none; color: white; }
 
-    .btn { padding: 10px 16px; border-radius: 10px; border: none; cursor: pointer; font-weight: 600; transition: 0.2s; }
-    .btn-primary { background: #111; color: white; }
-    .btn-ghost { background: white; border: 1px solid #ddd; }
+    /* BUTTONS */
+    .btn { padding: 10px 18px; border-radius: 12px; border: none; font-weight: 700; cursor: pointer; transition: 0.2s; }
+    .btn-main { background: #111; color: white; }
+    .btn-outline { background: transparent; border: 1px solid #ddd; color: var(--accent); }
+    .theme-toggle { position: absolute; top: 20px; right: 20px; cursor: pointer; font-size: 20px; }
 
-    .footer { padding: 15px 24px; font-size: 11px; color: var(--accent); display: flex; justify-content: space-between; border-top: 1px solid rgba(0,0,0,0.03); }
-    .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #111; color: #fff; padding: 10px 20px; border-radius: 50px; opacity: 0; transition: 0.3s; pointer-events: none; z-index: 9999; }
+    footer { padding: 20px; text-align: center; font-size: 12px; color: var(--accent); }
+    .toast { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: #111; color: #fff; padding: 12px 25px; border-radius: 50px; opacity: 0; transition: 0.3s; pointer-events: none; }
     .toast.show { opacity: 1; }
   </style>
 </head>
-<body>
+<body id="body">
 
 <div class="app">
-  <div class="profile-header">
-    <div class="avatar-wrapper" onclick="document.getElementById('photoInput').click()">
-      <img id="userPhoto" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix">
+  <div class="profile-section">
+    <div class="theme-toggle" onclick="toggleTheme()">🌓</div>
+    <div class="avatar-wrapper" onclick="document.getElementById('pInput').click()">
+      <img id="uPic" src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix">
     </div>
-    <input type="file" id="photoInput" hidden accept="image/*">
-    <div class="user-info">
-      <input type="text" id="userName" value="Seu Nome">
+    <input type="file" id="pInput" hidden accept="image/*">
+    <div class="user-meta">
+      <input type="text" id="uName" class="name-in" value="Meu Nome">
+      <div class="stats-row">
+        <div class="stat-box">PESO <input type="number" id="uWeight" value="70" step="0.1" onchange="save()"> kg</div>
+        <div class="stat-box">META <input type="number" id="uGoal" value="65" step="0.1" onchange="save()"> kg</div>
+      </div>
     </div>
   </div>
 
-  <nav class="tabs">
-    <button class="tab-btn active" onclick="switchPage('treino', this)">💪 Treinos</button>
-    <button class="tab-btn" onclick="switchPage('nutri', this)">🥗 Nutrição</button>
+  <nav class="nav-tabs">
+    <button class="tab-link active" onclick="tab('treino', this)">💪 TREINOS</button>
+    <button class="tab-link" onclick="tab('dieta', this)">🍎 DIETA</button>
   </nav>
 
   <main>
-    <div id="page-treino" class="page active">
+    <div id="view-treino" class="page active">
       <div style="display:flex; gap:10px; margin-bottom:15px;">
-        <button class="btn btn-primary" onclick="resetChecks()">Zerar Checks</button>
-        <button class="btn btn-ghost" onclick="addEx()">➕ Adicionar</button>
+        <button class="btn btn-main" onclick="resetToday()">Zerar Checks</button>
+        <button class="btn btn-outline" onclick="addWorkoutDay()">+ Novo Dia</button>
       </div>
-      <div id="treino-content"></div>
+      <div id="workout-list"></div>
     </div>
 
-    <div id="page-nutri" class="page">
-      <div id="nutri-content"></div>
+    <div id="view-dieta" class="page">
+      <div id="diet-list"></div>
     </div>
   </main>
 
-  <footer class="footer">
-    <div>RainbowFitness Pro</div>
-    <div>Planejamento Integrado</div>
+  <footer>
+    Feito com ❤️ RainbowFitness — 100% Salvo Localmente
   </footer>
 </div>
 
-<div class="toast" id="toast">Salvo!</div>
+<div class="toast" id="toast">Alteração salva!</div>
 
 <script>
-// --- BANCO DE DATOS ---
-const DB_KEY = 'rf_integrated_db_v1';
-let db = JSON.parse(localStorage.getItem(DB_KEY)) || {
-  user: { name: "Seu Nome", photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" },
-  treino: {
-    'Segunda — Peito/Ombro/Tríceps':['Supino reto','Supino inclinado','Crucifixo','Desenvolvimento','Elevação lateral','Tríceps corda'],
-    'Terça — Costas/Bíceps':['Puxada frente','Remada baixa','Remada unilateral','Pulldown','Rosca direta'],
-    'Quarta — Glúteos/Posteriores':['Agachamento','Leg press','Mesa flexora','Stiff','Elevação pélvica'],
-    'Quinta — Ombro e Core':['Arnold','Elevação lateral','Elevação frontal','Remada alta','Prancha'],
-    'Sexta — Glúteos/Posteriores':['Agachamento sumô','Avanço','Extensora','Stiff romeno','Hip thrust']
-  },
+// --- CORE ENGINE ---
+const APP_DB = 'rainbow_god_v5';
+let db = JSON.parse(localStorage.getItem(APP_DB)) || {
+  user: { name: "Seu Nome", photo: "https://api.dicebear.com/7.x/avataaars/svg?seed=Felix", weight: 70, goal: 65, dark: false },
+  treino: [
+    { day: "Segunda — Superior", exs: ["Supino Reto","Desenvolvimento","Tríceps Corda"] },
+    { day: "Terça — Inferior", exs: ["Agachamento","Leg Press","Mesa Flexora"] }
+  ],
   progresso: {},
-  nutri: {
-    'Segunda': { cafe: '3 ovos + aveia + banana', almoco: 'frango + arroz + feijão + salada', pre: 'banana + aveia', jantar: 'sanduíche de frango' },
-    'Terça': { cafe: 'omelete + pão integral', almoco: 'carne moída + batata + salada', pre: 'iogurte + aveia', jantar: 'tacos saudáveis' },
-    'Quarta': { cafe: 'ovos + aveia + banana', almoco: 'peixe + arroz + feijão', pre: 'banana + café', jantar: 'omelete + salada' },
-    'Quinta': { cafe: 'iogurte + aveia + banana', almoco: 'frango + arroz + feijão', pre: 'banana', jantar: 'tacos de carne' },
-    'Sexta': { cafe: 'ovos + aveia', almoco: 'carne + batata + salada', pre: 'banana + aveia', jantar: 'sanduíche proteico' },
-    'Sábado': { cafe: 'omelete + pão integral', almoco: 'churrasco moderado + salada', pre: 'Livre', jantar: 'tacos ou sanduíche' },
-    'Domingo': { cafe: 'ovos + aveia + banana', almoco: 'peixe ou frango + arroz', pre: 'Livre', jantar: 'Omelete leve' }
-  }
+  dieta: [
+    { label: "Café da Manhã", menu: "3 ovos + café" },
+    { label: "Almoço", menu: "Frango + arroz + salada" }
+  ]
 };
 
 function save() {
-  db.user.name = document.getElementById('userName').value;
-  localStorage.setItem(DB_KEY, JSON.stringify(db));
+  db.user.name = document.getElementById('uName').value;
+  db.user.weight = document.getElementById('uWeight').value;
+  db.user.goal = document.getElementById('uGoal').value;
+  localStorage.setItem(APP_DB, JSON.stringify(db));
   const t = document.getElementById('toast'); t.classList.add('show');
   setTimeout(() => t.classList.remove('show'), 1500);
 }
 
-// --- NAVEGAÇÃO ---
-function switchPage(id, btn) {
+function toggleTheme() { db.user.dark = !db.user.dark; applyTheme(); save(); }
+function applyTheme() { document.getElementById('body').classList.toggle('dark', db.user.dark); }
+
+function tab(id, btn) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-  document.getElementById('page-'+id).classList.add('active');
+  document.querySelectorAll('.tab-link').forEach(b => b.classList.remove('active'));
+  document.getElementById('view-' + id).classList.add('active');
   btn.classList.add('active');
 }
 
-// --- RENDERIZAR TREINO ---
+// --- RENDER TREINO ---
 function renderTreino() {
-  const container = document.getElementById('treino-content');
+  const container = document.getElementById('workout-list');
   container.innerHTML = '';
-  Object.entries(db.treino).forEach(([day, exs]) => {
+  db.treino.forEach((item, dIdx) => {
     const card = document.createElement('div'); card.className = 'card';
-    const exsHtml = exs.map(ex => {
-      const checked = db.progresso[day] && db.progresso[day][ex];
-      return `<div class="ex-item">
-        <label style="flex:1">${ex}</label>
-        <div class="tick ${checked?'checked':''}" onclick="toggleEx('${day}', '${ex}', this)">${checked?'✓':''}</div>
-      </div>`;
+    let rowsHtml = item.exs.map((ex, eIdx) => {
+      const isDone = db.progresso[item.day] && db.progresso[item.day][ex];
+      return `
+        <div class="item-row">
+          <div class="check-circle ${isDone?'checked':''}" onclick="toggleEx(${dIdx}, ${eIdx}, this)">${isDone?'✓':''}</div>
+          <input type="text" value="${ex}" onblur="updateEx(${dIdx}, ${eIdx}, this.value)">
+          <span style="opacity:0.3" onclick="removeEx(${dIdx}, ${eIdx})">✕</span>
+        </div>`;
     }).join('');
-    card.innerHTML = `<h2 onclick="toggleCollapse(this)">${day} <span>▼</span></h2><div style="display:none">${exsHtml}</div>`;
+    
+    card.innerHTML = `
+      <div class="card-title">
+        <input type="text" style="font-weight:800; border:none; background:transparent; color:inherit; outline:none;" value="${item.day}" onblur="updateDay(${dIdx}, this.value)">
+        <button class="btn btn-outline" style="font-size:10px" onclick="toggleExp(this)">EXPANDIR</button>
+      </div>
+      <div class="editable-list" style="display:none">
+        ${rowsHtml}
+        <button class="btn btn-outline" style="width:100%; margin-top:10px;" onclick="addExToDay(${dIdx})">+ Exercício</button>
+      </div>`;
     container.appendChild(card);
   });
 }
 
-function toggleEx(day, ex, el) {
-  db.progresso[day] = db.progresso[day] || {};
+function toggleEx(dIdx, eIdx, el) {
+  const dayName = db.treino[dIdx].day;
+  const exName = db.treino[dIdx].exs[eIdx];
+  db.progresso[dayName] = db.progresso[dayName] || {};
   const active = !el.classList.contains('checked');
   el.classList.toggle('checked'); el.innerHTML = active ? '✓' : '';
-  db.progresso[day][ex] = active; save();
+  db.progresso[dayName][exName] = active; save();
 }
 
-function toggleCollapse(el) {
-  const content = el.nextElementSibling;
-  content.style.display = content.style.display === 'none' ? 'block' : 'none';
+function toggleExp(btn) {
+  const list = btn.parentElement.nextElementSibling;
+  const isHidden = list.style.display === 'none';
+  list.style.display = isHidden ? 'block' : 'none';
+  btn.textContent = isHidden ? 'RECOLHER' : 'EXPANDIR';
 }
 
-// --- RENDERIZAR NUTRIÇÃO ---
-function renderNutri() {
-  const container = document.getElementById('nutri-content');
+// --- RENDER DIETA ---
+function renderDieta() {
+  const container = document.getElementById('diet-list');
   container.innerHTML = '';
-  Object.entries(db.nutri).forEach(([day, meals]) => {
+  db.dieta.forEach((meal, mIdx) => {
     const card = document.createElement('div'); card.className = 'card';
     card.innerHTML = `
-      <h2>${day}</h2>
-      <div class="meal-row"><b>Café:</b><input class="meal-input" value="${meals.cafe}" onblur="updateNutri('${day}', 'cafe', this.value)"></div>
-      <div class="meal-row"><b>Almoço:</b><input class="meal-input" value="${meals.almoco}" onblur="updateNutri('${day}', 'almoco', this.value)"></div>
-      <div class="meal-row"><b>Pré:</b><input class="meal-input" value="${meals.pre}" onblur="updateNutri('${day}', 'pre', this.value)"></div>
-      <div class="meal-row"><b>Jantar:</b><input class="meal-input" value="${meals.jantar}" onblur="updateNutri('${day}', 'jantar', this.value)"></div>
+      <div class="card-title"><input type="text" style="font-weight:800; border:none; background:transparent; color:#ff5f6d; outline:none;" value="${meal.label}" onblur="db.dieta[${mIdx}].label=this.value; save();"></div>
+      <textarea style="width:100%; border:none; background:transparent; font-family:inherit; outline:none; font-size:14px; color:inherit;" rows="2" onblur="db.dieta[${mIdx}].menu=this.value; save();">${meal.menu}</textarea>
     `;
     container.appendChild(card);
   });
 }
 
-function updateNutri(day, meal, val) { db.nutri[day][meal] = val; save(); }
+// --- SETUP ---
+function updateEx(dIdx, eIdx, val) { db.treino[dIdx].exs[eIdx] = val; save(); }
+function updateDay(idx, val) { db.treino[idx].day = val; save(); }
+function addWorkoutDay() { db.treino.push({ day: "Novo Dia", exs: [] }); renderTreino(); save(); }
+function addExToDay(idx) { db.treino[idx].exs.push("Novo Exercício"); renderTreino(); save(); }
+function removeEx(dIdx, eIdx) { db.treino[dIdx].exs.splice(eIdx, 1); renderTreino(); save(); }
+function resetToday() { if(confirm("Zerar progresso?")) { db.progresso = {}; renderTreino(); save(); } }
 
-// --- PERFIL ---
-document.getElementById('userName').value = db.user.name;
-document.getElementById('userPhoto').src = db.user.photo;
-document.getElementById('photoInput').onchange = e => {
+document.getElementById('uName').value = db.user.name;
+document.getElementById('uWeight').value = db.user.weight;
+document.getElementById('uGoal').value = db.user.goal;
+document.getElementById('uPic').src = db.user.photo;
+document.getElementById('pInput').onchange = e => {
   const r = new FileReader();
-  r.onload = () => { db.user.photo = r.result; document.getElementById('userPhoto').src = r.result; save(); };
+  r.onload = () => { db.user.photo = r.result; document.getElementById('uPic').src = r.result; save(); };
   r.readAsDataURL(e.target.files[0]);
 };
-document.getElementById('userName').onblur = save;
 
-function resetChecks() { if(confirm("Zerar todos os exercícios?")) { db.progresso = {}; renderTreino(); save(); } }
-function addEx() {
-  const day = prompt("Qual dia?"); if(!db.treino[day]) return alert("Dia não encontrado!");
-  const name = prompt("Nome do exercício:"); if(name) { db.treino[day].push(name); renderTreino(); save(); }
-}
-
-if('serviceWorker' in navigator) navigator.serviceWorker.register('./sw.js');
-renderTreino(); renderNutri();
+applyTheme(); renderTreino(); renderDieta();
 </script>
 </body>
 </html>
